@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "D:\\université\\ac'lab\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzer-api.csproj": {}
+    "D:\\université\\ac'lab\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzerApi.csproj": {}
   },
   "projects": {
-    "D:\\université\\ac'lab\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzer-api.csproj": {
+    "D:\\université\\ac'lab\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzerApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\université\\ac'lab\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzer-api.csproj",
-        "projectName": "buzzer-api",
-        "projectPath": "D:\\université\\ac'lab\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzer-api.csproj",
+        "projectUniqueName": "D:\\université\\ac'lab\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzerApi.csproj",
+        "projectName": "buzzerApi",
+        "projectPath": "D:\\université\\ac'lab\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzerApi.csproj",
         "packagesPath": "C:\\Users\\acroquelois\\.nuget\\packages\\",
         "outputPath": "D:\\université\\ac'lab\\buzzer-bo-api\\buzzer-api\\buzzer-api\\obj\\",
         "projectStyle": "PackageReference",
@@ -49,35 +49,7 @@
               "version": "[2.2.0, )",
               "autoReferenced": true
             },
-            "Microsoft.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[2.2.4, )"
-            },
-            "Microsoft.EntityFrameworkCore.Abstractions": {
-              "target": "Package",
-              "version": "[2.2.4, )"
-            },
-            "Microsoft.EntityFrameworkCore.Analyzers": {
-              "target": "Package",
-              "version": "[2.2.4, )"
-            },
-            "Microsoft.Extensions.Caching.Abstractions": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
-            "Microsoft.Extensions.Caching.Memory": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
-            "Microsoft.Extensions.Configuration": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
-            "Microsoft.Extensions.Configuration.Abstractions": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
-            "Microsoft.Extensions.Configuration.Binder": {
+            "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[2.2.4, )"
             },
@@ -86,22 +58,6 @@
               "version": "[2.2.0, )"
             },
             "Microsoft.Extensions.DependencyInjection.Abstractions": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
-            "Microsoft.Extensions.Logging": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
-            "Microsoft.Extensions.Logging.Abstractions": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
-            "Microsoft.Extensions.Options": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
-            "Microsoft.Extensions.Primitives": {
               "target": "Package",
               "version": "[2.2.0, )"
             },

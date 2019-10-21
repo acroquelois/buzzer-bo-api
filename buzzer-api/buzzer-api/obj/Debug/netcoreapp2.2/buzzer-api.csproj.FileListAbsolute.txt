@@ -1,0 +1,16 @@
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\bin\Debug\netcoreapp2.2\appsettings.Development.json
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\bin\Debug\netcoreapp2.2\appsettings.json
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\bin\Debug\netcoreapp2.2\Properties\launchSettings.json
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\bin\Debug\netcoreapp2.2\buzzer-api.deps.json
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\bin\Debug\netcoreapp2.2\buzzer-api.runtimeconfig.json
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\bin\Debug\netcoreapp2.2\buzzer-api.runtimeconfig.dev.json
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\bin\Debug\netcoreapp2.2\buzzer-api.dll
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\bin\Debug\netcoreapp2.2\buzzer-api.pdb
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\obj\Debug\netcoreapp2.2\buzzer-api.csprojAssemblyReference.cache
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\obj\Debug\netcoreapp2.2\buzzer-api.RazorAssemblyInfo.cache
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\obj\Debug\netcoreapp2.2\buzzer-api.RazorAssemblyInfo.cs
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\obj\Debug\netcoreapp2.2\buzzer-api.AssemblyInfoInputs.cache
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\obj\Debug\netcoreapp2.2\buzzer-api.AssemblyInfo.cs
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\obj\Debug\netcoreapp2.2\buzzer-api.RazorTargetAssemblyInfo.cache
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\obj\Debug\netcoreapp2.2\buzzer-api.dll
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\obj\Debug\netcoreapp2.2\buzzer-api.pdb
