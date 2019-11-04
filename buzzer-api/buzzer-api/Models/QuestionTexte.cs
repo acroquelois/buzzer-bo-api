@@ -12,21 +12,21 @@ namespace buzzerApi.Models
         public Guid Id { get; set; }
 
         [Required]
-        public string question { get; set; }
+        public string Question { get; set; }
 
         [Required]
-        public string reponse { get; set; }
+        public string Reponse { get; set; }
 
         [Required]
-        public string proposition1 { get; set; }
+        public string Proposition1 { get; set; }
 
         [Required]
-        public string proposition2 { get; set; }
+        public string Proposition2 { get; set; }
 
         [Required]
-        public string proposition3 { get; set; }
+        public string Proposition3 { get; set; }
 
         [Required]
-        public string proposition4 { get; set; }
+        public string Proposition4 { get; set; }
     }
 }

@@ -14,5 +14,7 @@ namespace buzzerApi.Models
         }
 
         public DbSet<Models.QuestionTexte> QuestionTexte{ get; set; }
+
+        public DbSet<Models.User> User { get; set; }
     }
 }

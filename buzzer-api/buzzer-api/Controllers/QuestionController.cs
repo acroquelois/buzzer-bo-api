@@ -57,10 +57,19 @@ namespace buzzerApi.Controllers
             }
         }
 
-        // DELETE api/values/5
+        // DELETE api/values/delete
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(Guid id)
         {
+            try
+            {
+                _questionService.DeleteQuestion(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
     }
 }

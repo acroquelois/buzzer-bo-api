@@ -26,5 +26,10 @@ namespace buzzerApi.Services
         {
             return await _repository.ListAllQuestionTexte();
         }
+
+        public async Task<bool> DeleteQuestion(Guid id)
+        {
+            return await _repository.DeleteAsync(id);
+        }
     }
 }

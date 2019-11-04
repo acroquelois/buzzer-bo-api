@@ -9,5 +9,6 @@ namespace buzzerApi.Repository.Abstraction
     public interface IQuestionTexteRepository : IQuestionRepository
     {
         Task<IEnumerable<QuestionTexte>> ListAllQuestionTexte();
+        Task<bool> DeleteAsync(Guid id);
     }
 }
