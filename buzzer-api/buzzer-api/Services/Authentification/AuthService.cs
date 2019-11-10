@@ -1,24 +1,56 @@
-﻿using buzzerApi.Models;
+﻿using buzzerApi.Dto;
+using buzzerApi.Enum;
+using buzzerApi.Models;
 using buzzerApi.Options;
 using buzzerApi.Services.Abstraction;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace buzzerApi.Services.Authentification
 {
     public class AuthService : IAuthService
     {
-        public AuthService(AuthOptions authOption)
+        public AuthService(AuthOptions authOption, IPasswordHasher<Models.User> passwordHasher, IUserService userService)
         {
             _authOptions = authOption;
+            _passwordHasher = passwordHasher;
+            _userService = userService;
         }
 
-        private AuthOptions _authOptions;
+        private readonly AuthOptions _authOptions;
+        private readonly IPasswordHasher<Models.User> _passwordHasher;
+        private readonly IUserService _userService;
+
+        public async Task<(AuthErrors, UserToken)> LoginAsync(Models.User userAuth)
+        {
+            if (userAuth == null)
+            {
+                return (AuthErrors.EmptyUsername, null);
+            }
+            if (string.IsNullOrEmpty(userAuth.Email))
+            {
+                return (AuthErrors.EmptyUsername, null);
+            }
+            var user = await _userService.GetUserAsync(userAuth.Email);
+            PasswordVerificationResult result = _passwordHasher.VerifyHashedPassword(user, user.Password, userAuth.Password.Trim());
+
+            if (result == PasswordVerificationResult.Failed)
+            {
+                return (AuthErrors.Forbidden, null);
+            }
+
+            UserToken accessToken = this.GenerateToken(user);
+
+            return (AuthErrors.None, accessToken);
+        }
+
 
         /// <summary>
         /// Generates token by given user
@@ -26,21 +58,26 @@ namespace buzzerApi.Services.Authentification
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public string GenerateToken(User user)
+        public UserToken GenerateToken(Models.User user)
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            var keyByteArray = Encoding.ASCII.GetBytes(_authOptions.SecretKey);
+            var signinKey = new SymmetricSecurityKey(keyByteArray);
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Sid, user.Id.ToString()),
+                    new Claim(ClaimTypes.Sid, user.Email.ToString()),
                     new Claim("app", "buzzer")
                 }),
                 Expires = DateTime.UtcNow.AddSeconds(_authOptions.ExpireMinutes),
-                SigningCredentials = new SigningCredentials(GetSymmetricSecurityKey(), _authOptions.SecurityAlgorithm)
+                SigningCredentials = new SigningCredentials(signinKey, _authOptions.SecurityAlgorithm)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            return new UserToken()
+            {
+                Token = tokenHandler.WriteToken(token)
+            };
         }
 
         /// <summary>

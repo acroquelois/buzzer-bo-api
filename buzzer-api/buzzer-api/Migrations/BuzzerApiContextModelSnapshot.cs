@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using buzzerApi.Models;
 
@@ -15,36 +14,55 @@ namespace buzzerApi.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
 
             modelBuilder.Entity("buzzerApi.Models.QuestionTexte", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<byte[]>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
 
-                    b.Property<string>("proposition1")
+                    b.Property<string>("Proposition1")
                         .IsRequired();
 
-                    b.Property<string>("proposition2")
+                    b.Property<string>("Proposition2")
                         .IsRequired();
 
-                    b.Property<string>("proposition3")
+                    b.Property<string>("Proposition3")
                         .IsRequired();
 
-                    b.Property<string>("proposition4")
+                    b.Property<string>("Proposition4")
                         .IsRequired();
 
-                    b.Property<string>("question")
+                    b.Property<string>("Question")
                         .IsRequired();
 
-                    b.Property<string>("reponse")
+                    b.Property<string>("Reponse")
                         .IsRequired();
 
                     b.HasKey("Id");
 
                     b.ToTable("QuestionTexte");
+                });
+
+            modelBuilder.Entity("buzzerApi.Models.User", b =>
+                {
+                    b.Property<byte[]>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+
+                    b.Property<string>("Email")
+                        .IsRequired();
+
+                    b.Property<string>("Password")
+                        .IsRequired();
+
+                    b.Property<string>("Telephone")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
                 });
 #pragma warning restore 612, 618
         }

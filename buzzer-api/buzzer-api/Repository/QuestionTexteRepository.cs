@@ -1,8 +1,8 @@
 ﻿using buzzerApi.Models;
 using buzzerApi.Repository.Abstraction;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,8 +19,8 @@ namespace buzzerApi.Repository
 
         public async Task CreateAsync(QuestionTexte question)
         {
-            await db.QuestionTexte.AddAsync(question);
-            db.SaveChanges();
+            db.QuestionTexte.Add(question);
+            await db.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<QuestionTexte>> ListAllQuestionTexte()

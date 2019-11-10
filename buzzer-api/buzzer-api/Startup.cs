@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using buzzerApi.Models;
+﻿using buzzerApi.Models;
+using buzzerApi.Options;
 using buzzerApi.Repository;
 using buzzerApi.Repository.Abstraction;
 using buzzerApi.Services;
 using buzzerApi.Services.Abstraction;
+using buzzerApi.Services.Authentification;
+using buzzerApi.Services.User;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace buzzer_api
 {
@@ -35,8 +32,15 @@ namespace buzzer_api
 
             services
                 .AddScoped<IQuestionTexteRepository, QuestionTexteRepository>()
+                .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IQuestionService, QuestionService>()
-                .AddDbContext<BuzzerApiContext>(builder => builder.UseSqlServer(Configuration.GetConnectionString("BuzzerApiContext")));
+                .AddScoped<IAuthService, AuthService>()
+                .AddScoped<IUserService, UserService>()
+                .AddScoped<IPasswordHasher<User>, PasswordHasher<User>>()
+
+                .AddScoped<AuthOptions>()
+                .AddDbContext<BuzzerApiContext>(
+                options => options.UseMySQL(Configuration.GetConnectionString("BuzzerApiContext")));
 
             services.AddCors(actions =>
 
