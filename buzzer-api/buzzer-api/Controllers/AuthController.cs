@@ -21,14 +21,14 @@ namespace buzzerApi.Controllers
     public class AuthController : ControllerBase
     {
         [HttpPost]
-        public async Task<ActionResult> Login(
+        public ActionResult Login(
             [FromBody] UserAuth user,
             [FromServices] IAuthService authService
             )
         {
             try
             {
-                var (authError,token) = await authService.LoginAsync(new Models.User { Email = user.Email, Password = user.Password });
+                var (authError,token) = authService.LoginAsync(new Models.User { Email = user.Email, Password = user.Password });
                 if (authError == AuthErrors.EmptyUsername)
                 {
                     return Unauthorized(new { Message = "Utilisateur ou mot de passe incorrect." });
@@ -40,6 +40,25 @@ namespace buzzerApi.Controllers
                 }
 
                 return Ok(token);
+            }
+            catch(Exception e)
+            {
+                return StatusCode(500, new { Message = "Server Error", Trace = e.StackTrace });
+            }
+        }
+
+        [HttpGet]
+        public ActionResult GetClaim()
+        {
+            try
+            {
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                if (identity != null)
+                {
+                    IEnumerable<Claim> claims = identity.Claims;
+                    return Ok(claims);
+                }
+                return Ok();
             }
             catch(Exception e)
             {

@@ -1,5 +1,6 @@
 ﻿using buzzerApi.Models;
 using buzzerApi.Services.Abstraction;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace buzzerApi.Controllers
     public class UserController : ControllerBase
     {
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> CreateUser(
             [FromBody] User user,
             [FromServices] IUserService userService
@@ -30,14 +32,14 @@ namespace buzzerApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetUserByMail(
+        public ActionResult GetUserByMail(
             string mail,
             [FromServices] IUserService userService
             )
         {
             try
             {
-                var ret = await userService.GetUserAsync(mail);
+                var ret = userService.GetUserAsync(mail);
                 return Ok(ret);
             }
             catch (Exception e)

@@ -6,6 +6,7 @@ using buzzerApi.Services;
 using buzzerApi.Services.Abstraction;
 using buzzerApi.Services.Authentification;
 using buzzerApi.Services.User;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace buzzer_api
 {
@@ -31,7 +34,7 @@ namespace buzzer_api
         {
 
             services
-                .AddScoped<IQuestionTexteRepository, QuestionTexteRepository>()
+                .AddScoped<IQuestionRepository, QuestionRepository>()
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IQuestionService, QuestionService>()
                 .AddScoped<IAuthService, AuthService>()
@@ -42,6 +45,20 @@ namespace buzzer_api
                 .AddDbContext<BuzzerApiContext>(
                 options => options.UseMySQL(Configuration.GetConnectionString("BuzzerApiContext")));
 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["http://localhost/5000"],
+                        ValidAudience = Configuration["http://localhost/5000"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Tw9dsdregfddshfusd"))
+                    };
+                });
             services.AddCors(actions =>
 
             {
@@ -71,13 +88,13 @@ namespace buzzer_api
             else
             {
                 app.UseHsts();
-                app.UseHttpsRedirection();
             }
 
 
             app
                 .UseCors("policy")
-                .UseMvc();
+                .UseMvc()
+                .UseAuthentication();
 
             // UseCors before Mvc
 

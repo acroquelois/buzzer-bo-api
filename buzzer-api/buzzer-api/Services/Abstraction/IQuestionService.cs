@@ -8,9 +8,9 @@ namespace buzzerApi.Services.Abstraction
 {
     public interface IQuestionService
     {
-        Task CreateQuestionTexte(QuestionTexte question);
+        Task CreateQuestionTexte(Question question);
 
-        Task<IEnumerable<QuestionTexte>> GetListAllQuestionTexte();
+        Task<IEnumerable<Question>> GetListAllQuestionTexte();
 
         Task<bool> DeleteQuestion(Guid id);
     }

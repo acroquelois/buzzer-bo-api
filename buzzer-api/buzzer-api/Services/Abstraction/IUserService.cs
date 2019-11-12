@@ -10,6 +10,6 @@ namespace buzzerApi.Services.Abstraction
     {
         Task<Models.User> CreateUserAsync(Models.User user);
 
-        Task<Models.User> GetUserAsync(string mail);
+        Models.User GetUserAsync(string mail);
     }
 }

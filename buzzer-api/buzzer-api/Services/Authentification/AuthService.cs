@@ -28,7 +28,7 @@ namespace buzzerApi.Services.Authentification
         private readonly IPasswordHasher<Models.User> _passwordHasher;
         private readonly IUserService _userService;
 
-        public async Task<(AuthErrors, UserToken)> LoginAsync(Models.User userAuth)
+        public (AuthErrors, UserToken) LoginAsync(Models.User userAuth)
         {
             if (userAuth == null)
             {
@@ -38,7 +38,7 @@ namespace buzzerApi.Services.Authentification
             {
                 return (AuthErrors.EmptyUsername, null);
             }
-            var user = await _userService.GetUserAsync(userAuth.Email);
+            var user = _userService.GetUserAsync(userAuth.Email);
             PasswordVerificationResult result = _passwordHasher.VerifyHashedPassword(user, user.Password, userAuth.Password.Trim());
 
             if (result == PasswordVerificationResult.Failed)

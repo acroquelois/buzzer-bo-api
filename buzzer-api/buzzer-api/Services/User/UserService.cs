@@ -35,11 +35,11 @@ namespace buzzerApi.Services.User
             }
         }
 
-        public async Task<Models.User> GetUserAsync(string mail)
+        public Models.User GetUserAsync(string mail)
         {
             try
             {
-                return await _repository.GetAsync(mail);
+                return _repository.GetAsync(mail);
             }
             catch (Exception e)
             {

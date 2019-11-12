@@ -23,11 +23,11 @@ namespace buzzerApi.Repository
             await db.SaveChangesAsync();
         }
 
-        public async Task<User> GetAsync(string mail)
+        public User GetAsync(string mail)
         {
-            var ret = await db.User
+            var ret = db.User
                 .Where(x => x.Email == mail)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
             return ret;
         }
     }

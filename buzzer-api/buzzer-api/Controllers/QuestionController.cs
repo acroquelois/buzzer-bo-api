@@ -21,7 +21,7 @@ namespace buzzerApi.Controllers
 
         // GET api/question/get
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<QuestionTexte>>> Get()
+        public async Task<ActionResult<IEnumerable<Question>>> Get()
         {
             try
             {
@@ -44,7 +44,7 @@ namespace buzzerApi.Controllers
 
         // POST api/values/postquestiontexte
         [HttpPost]
-        public IActionResult PostQuestionTexte([FromBody] QuestionTexte question)
+        public IActionResult PostQuestionTexte([FromBody] Question question)
         {
             try
             {
