@@ -37,7 +37,7 @@ namespace buzzerApi.Repository
                 await db.SaveChangesAsync();
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }
