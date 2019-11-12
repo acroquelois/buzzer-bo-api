@@ -1,22 +1,12 @@
-﻿using buzzerApi.Models;
-using buzzerApi.Options;
-using buzzerApi.Repository;
-using buzzerApi.Repository.Abstraction;
-using buzzerApi.Services;
-using buzzerApi.Services.Abstraction;
-using buzzerApi.Services.Authentification;
-using buzzerApi.Services.User;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using buzzerApi.Extensions;
+using buzzerApi.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace buzzer_api
 {
@@ -24,41 +14,23 @@ namespace buzzer_api
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration _configuration;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services
-                .AddScoped<IQuestionRepository, QuestionRepository>()
-                .AddScoped<IUserRepository, UserRepository>()
-                .AddScoped<IQuestionService, QuestionService>()
-                .AddScoped<IAuthService, AuthService>()
-                .AddScoped<IUserService, UserService>()
-                .AddScoped<IPasswordHasher<User>, PasswordHasher<User>>()
-
-                .AddScoped<AuthOptions>()
+                .AddCustomServices()
+                .AddCustomAuth(_configuration)
                 .AddDbContext<BuzzerApiContext>(
-                options => options.UseMySQL(Configuration.GetConnectionString("BuzzerApiContext")));
+                options => options.UseMySQL(_configuration.GetConnectionString("BuzzerApiContext")));
+                
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = Configuration["http://localhost/5000"],
-                        ValidAudience = Configuration["http://localhost/5000"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Tw9dsdregfddshfusd"))
-                    };
-                });
+
+
             services.AddCors(actions =>
 
             {
@@ -75,7 +47,10 @@ namespace buzzer_api
 
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services
+                .AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,8 +68,9 @@ namespace buzzer_api
 
             app
                 .UseCors("policy")
-                .UseMvc()
-                .UseAuthentication();
+                .UseAuthentication()
+                .UseMvc();
+                
 
             // UseCors before Mvc
 

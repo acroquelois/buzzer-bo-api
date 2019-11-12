@@ -13,8 +13,7 @@ namespace buzzerApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        [HttpPost]
-        [Authorize]
+        [Authorize,HttpPost]
         public async Task<ActionResult> CreateUser(
             [FromBody] User user,
             [FromServices] IUserService userService
