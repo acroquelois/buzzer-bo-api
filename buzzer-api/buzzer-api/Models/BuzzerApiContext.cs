@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace buzzerApi.Models
 {
@@ -13,7 +9,7 @@ namespace buzzerApi.Models
         {
         }
 
-        public DbSet<Models.Question> Question{ get; set; }
+        public DbSet<Models.Question> Question { get; set; }
 
         public DbSet<Models.User> User { get; set; }
     }

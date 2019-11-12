@@ -1,11 +1,7 @@
-﻿using buzzerApi.Dto;
-using buzzerApi.Models;
-using buzzerApi.Repository.Abstraction;
+﻿using buzzerApi.Repository.Abstraction;
 using buzzerApi.Services.Abstraction;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace buzzerApi.Services.User
@@ -29,7 +25,7 @@ namespace buzzerApi.Services.User
                 await _repository.CreateAsync(user);
                 return user;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw (e);
             }

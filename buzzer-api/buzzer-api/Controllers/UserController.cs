@@ -3,8 +3,6 @@ using buzzerApi.Services.Abstraction;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace buzzerApi.Controllers
@@ -13,7 +11,7 @@ namespace buzzerApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        [Authorize,HttpPost]
+        [Authorize, HttpPost]
         public async Task<ActionResult> CreateUser(
             [FromBody] User user,
             [FromServices] IUserService userService
@@ -24,7 +22,7 @@ namespace buzzerApi.Controllers
                 var ret = await userService.CreateUserAsync(user);
                 return Ok(ret);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(e);
             }
