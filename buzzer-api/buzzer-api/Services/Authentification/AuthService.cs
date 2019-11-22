@@ -8,6 +8,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace buzzerApi.Services.Authentification
 {
@@ -24,7 +25,7 @@ namespace buzzerApi.Services.Authentification
         private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
 
-        public (AuthErrors, UserToken) LoginAsync(Models.User userAuth)
+        public async Task<(AuthErrors, UserToken)> LoginAsync(Models.User userAuth)
         {
             if (userAuth == null)
             {
@@ -34,7 +35,7 @@ namespace buzzerApi.Services.Authentification
             {
                 return (AuthErrors.EmptyUsername, null);
             }
-            var user = _userService.GetUserAsync(userAuth.Email);
+            var user = await _userService.GetUserAsync(userAuth.Email);
             PasswordVerificationResult result = _passwordHasher.VerifyHashedPassword(user, user.Password, userAuth.Password.Trim());
 
             if (result == PasswordVerificationResult.Failed)

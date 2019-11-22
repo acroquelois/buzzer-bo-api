@@ -7,6 +7,6 @@ namespace buzzerApi.Repository.Abstraction
     {
         Task CreateAsync(User user);
 
-        User GetAsync(string mail);
+        Task<User> GetAsync(string mail);
     }
 }

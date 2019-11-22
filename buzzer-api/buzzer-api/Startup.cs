@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace buzzer_api
 {
@@ -27,7 +28,11 @@ namespace buzzer_api
                 .AddCustomAuth(_configuration)
                 .AddDbContext<BuzzerApiContext>(
                 options => options.UseMySQL(_configuration.GetConnectionString("BuzzerApiContext")));
-                
+
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(5);
+            });
+
 
 
 
@@ -69,6 +74,7 @@ namespace buzzer_api
             app
                 .UseCors("policy")
                 .UseAuthentication()
+                .UseSession() 
                 .UseMvc();
                 
 

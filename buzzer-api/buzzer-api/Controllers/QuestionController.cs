@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using buzzerApi.Models;
 using buzzerApi.Services.Abstraction;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace buzzerApi.Controllers
@@ -19,8 +20,7 @@ namespace buzzerApi.Controllers
 
         private readonly IQuestionService _questionService;
 
-        // GET api/question/get
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<ActionResult<IEnumerable<Question>>> Get()
         {
             try
@@ -43,7 +43,7 @@ namespace buzzerApi.Controllers
         }
 
         // POST api/values/postquestiontexte
-        [HttpPost]
+        [HttpPost, Authorize]
         public IActionResult PostQuestionTexte([FromBody] Question question)
         {
             try
@@ -58,7 +58,7 @@ namespace buzzerApi.Controllers
         }
 
         // DELETE api/values/delete
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize]
         public IActionResult Delete(Guid id)
         {
             try

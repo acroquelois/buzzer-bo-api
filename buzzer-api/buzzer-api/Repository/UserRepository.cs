@@ -2,6 +2,7 @@
 using buzzerApi.Repository.Abstraction;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace buzzerApi.Repository
 {
@@ -20,11 +21,11 @@ namespace buzzerApi.Repository
             await db.SaveChangesAsync();
         }
 
-        public User GetAsync(string mail)
+        public async Task<User> GetAsync(string mail)
         {
-            var ret = db.User
+            var ret = await db.User
                 .Where(x => x.Email == mail)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
             return ret;
         }
     }

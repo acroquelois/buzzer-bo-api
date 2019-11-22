@@ -19,28 +19,19 @@ namespace buzzerApi.Services.User
 
         public async Task<Models.User> CreateUserAsync(Models.User user)
         {
-            try
-            {
-                user.Password = _passwordHasher.HashPassword(user, user.Password);
-                await _repository.CreateAsync(user);
-                return user;
-            }
-            catch (Exception e)
-            {
-                throw (e);
-            }
+            user.Password = _passwordHasher.HashPassword(user, user.Password);
+            await _repository.CreateAsync(user);
+            return user;
         }
 
-        public Models.User GetUserAsync(string mail)
+        public async Task<Models.User> GetUserAsync(string mail)
         {
-            try
+            var user = await _repository.GetAsync(mail);
+            if(user == null)
             {
-                return _repository.GetAsync(mail);
+                throw (new Exception("Unknown user"));
             }
-            catch (Exception e)
-            {
-                throw (e);
-            }
+            return user;
         }
     }
 }
