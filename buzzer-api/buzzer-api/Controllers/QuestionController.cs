@@ -21,12 +21,16 @@ namespace buzzerApi.Controllers
         private readonly IQuestionService _questionService;
 
         [HttpGet, Authorize]
-        public async Task<ActionResult<IEnumerable<Question>>> Get()
+        public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
         {
             try
             {
-                var question = await _questionService.GetListAllQuestionTexte();
-                return Ok(question);
+                var questions = await _questionService.GetListAllQuestionTexte();
+                if (questions == null)
+                {
+                    return NotFound("There is no question");
+                }
+                return Ok(questions);
             }
             catch (Exception ex)
             {
@@ -37,19 +41,20 @@ namespace buzzerApi.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<string> GetQuestion(int id)
         {
             return "value";
         }
 
-        // POST api/values/postquestiontexte
+        // POST api/values/postquestion
         [HttpPost, Authorize]
-        public IActionResult PostQuestionTexte([FromBody] Question question)
+        public IActionResult PostQuestion([FromBody] Question question)
+
         {
             try
             {
-                _questionService.CreateQuestionTexte(question);
-                return Ok();
+                var newQuestion =  _questionService.CreateQuestionTexte(question);
+                return CreatedAtAction("GetQuestion", new { id = newQuestion.Id}, newQuestion);
             }
             catch(Exception ex)
             {
@@ -58,13 +63,17 @@ namespace buzzerApi.Controllers
         }
 
         // DELETE api/values/delete
-        [HttpDelete("{id}"), Authorize]
-        public IActionResult Delete(Guid id)
+        [HttpDelete, Authorize]
+        public async Task<IActionResult> DeleteQuestion(Guid id)
         {
             try
             {
-                _questionService.DeleteQuestion(id);
-                return Ok();
+                var question = await _questionService.DeleteQuestion(id);
+                if (!question)
+                {
+                    return NotFound("The question doesn't not exist");
+                }
+                return Ok("The question was successfully deleted");
             }
             catch (Exception ex)
             {

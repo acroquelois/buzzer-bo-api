@@ -47,7 +47,7 @@ namespace buzzerApi.Controllers
                 var ret = await userService.GetUserAsync(mail);
                 if(ret == null)
                 {
-                    return NotFound();
+                    return NotFound("This email doesn't exist");
                 }
                 return Ok(ret);
             }

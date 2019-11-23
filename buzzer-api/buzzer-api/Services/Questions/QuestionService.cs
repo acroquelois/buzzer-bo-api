@@ -16,9 +16,10 @@ namespace buzzerApi.Services
             _repository = repository;
         }
 
-        public async Task CreateQuestionTexte(Question question)
-        {
+        public async Task<Question> CreateQuestionTexte(Question question)
+        { 
             await _repository.CreateAsync(question);
+            return question;
         }
 
         public async Task<IEnumerable<Question>> GetListAllQuestionTexte()
