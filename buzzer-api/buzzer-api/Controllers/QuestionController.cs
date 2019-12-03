@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using buzzerApi.Models;
 using buzzerApi.Services.Abstraction;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace buzzerApi.Controllers
@@ -25,7 +26,7 @@ namespace buzzerApi.Controllers
         {
             try
             {
-                var questions = await _questionService.GetListAllQuestionTexte();
+                var questions = await _questionService.GetListAllQuestion();
                 if (questions == null)
                 {
                     return NotFound("There is no question");
@@ -53,7 +54,7 @@ namespace buzzerApi.Controllers
         {
             try
             {
-                var newQuestion =  _questionService.CreateQuestionTexte(question);
+                var newQuestion =  _questionService.CreateQuestion(question);
                 return CreatedAtAction("GetQuestion", new { id = newQuestion.Id}, newQuestion);
             }
             catch(Exception ex)

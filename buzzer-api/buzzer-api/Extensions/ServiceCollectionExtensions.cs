@@ -1,4 +1,5 @@
 ﻿using buzzerApi.Models;
+using buzzerApi.Options;
 using buzzerApi.Repository;
 using buzzerApi.Repository.Abstraction;
 using buzzerApi.Services;
@@ -9,7 +10,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
 
 namespace buzzerApi.Extensions
@@ -37,7 +40,7 @@ namespace buzzerApi.Extensions
                     })
                 .AddJwtBearer(x =>
                 {
-                    var keyByteArray = Encoding.ASCII.GetBytes(configuration.GetValue<string>("Auth:Key"));
+                    var keyByteArray = Encoding.ASCII.GetBytes(configuration?.GetSection("Auth")?["Key"]);
                     x.RequireHttpsMetadata = false;
                     x.SaveToken = true;
                     x.TokenValidationParameters = new TokenValidationParameters
@@ -48,6 +51,44 @@ namespace buzzerApi.Extensions
                         ValidateAudience = false
                     };
                 });
+            return services;
+        }
+
+        /// <summary>
+        /// Registers <see cref="IOptions{TOptions}"/> and <typeparamref name="TOptions"/> to the services container.
+        /// Also runs data annotation validation.
+        /// </summary>
+        /// <typeparam name="TOptions">The type of the options.</typeparam>
+        /// <param name="services">The services collection.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <returns>The same services collection.</returns>
+        public static IServiceCollection ConfigureAndValidateSingleton<TOptions>(
+            this IServiceCollection services,
+            IConfiguration configuration)
+            where TOptions : class, new()
+        {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            services
+                .AddOptions<TOptions>()
+                .Bind(configuration)
+                .ValidateDataAnnotations();
+            return services.AddSingleton(x => x.GetRequiredService<IOptions<TOptions>>().Value);
+        }
+
+        public static IServiceCollection AddCustomOptions(this IServiceCollection services, IConfiguration configuration)
+        {
+            services
+                .ConfigureAndValidateSingleton<AuthOptions>(configuration.GetSection(nameof(ApplicationOptions.Auth)))
+                .ConfigureAndValidateSingleton<UploadOptions>(configuration.GetSection(nameof(ApplicationOptions.Upload)));
             return services;
         }
     }

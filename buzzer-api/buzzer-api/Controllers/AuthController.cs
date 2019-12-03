@@ -1,8 +1,10 @@
 ﻿using buzzerApi.Dto;
 using buzzerApi.Enum;
+using buzzerApi.Options;
 using buzzerApi.Services.Abstraction;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;

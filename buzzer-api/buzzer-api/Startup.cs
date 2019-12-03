@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.IO;
 
 namespace buzzer_api
 {
@@ -18,6 +19,14 @@ namespace buzzer_api
             _configuration = configuration;
         }
 
+        public Startup()
+        {
+            _configuration = new ConfigurationBuilder()
+                 .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", false)
+                .Build();
+        }
+
         public IConfiguration _configuration;
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -26,6 +35,7 @@ namespace buzzer_api
             services
                 .AddCustomServices()
                 .AddCustomAuth(_configuration)
+                .AddCustomOptions(_configuration)
                 .AddDbContext<BuzzerApiContext>(
                 options => options.UseMySQL(_configuration.GetConnectionString("BuzzerApiContext")));
 
