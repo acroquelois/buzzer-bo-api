@@ -5,6 +5,7 @@ using buzzerApi.Repository.Abstraction;
 using buzzerApi.Services;
 using buzzerApi.Services.Abstraction;
 using buzzerApi.Services.Authentification;
+using buzzerApi.Services.Upload;
 using buzzerApi.Services.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -27,6 +28,7 @@ namespace buzzerApi.Extensions
                 .AddScoped<IQuestionService, QuestionService>()
                 .AddScoped<IAuthService, AuthService>()
                 .AddScoped<IUserService, UserService>()
+                .AddScoped<IUploadService, UploadService>()
                 .AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         }
 
