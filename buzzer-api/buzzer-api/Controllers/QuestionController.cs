@@ -30,6 +30,14 @@ namespace buzzerApi.Controllers
         private readonly IOptions<UploadOptions> _uploadOptions;
         private readonly IUploadService _uploadService;
 
+
+        /// <summary>
+        /// Return a random question.
+        /// </summary>
+        /// <returns>A random question</returns>
+        /// <response code="200">Returns the question</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Question not found</response>
         [HttpGet, Authorize]
         public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
         {
@@ -49,14 +57,24 @@ namespace buzzerApi.Controllers
             
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
+        /// <summary>
+        /// Get question by id.
+        /// </summary>
+        /// <param name="id">Id of the question</param>
+        /// <returns>The specified question</returns>
+        [HttpGet("{id}"), Authorize]
         public ActionResult<string> GetQuestion(int id)
         {
             return "value";
         }
 
-        // POST api/values/postquestion
+        /// <summary>
+        /// Creates a Question with string proposition.
+        /// </summary>
+        /// <param name="question">Question model</param>
+        /// <returns>A newly created Question</returns>
+        /// <response code="201">Returns the newly created question</response>
+        /// <response code="400">No files send or no question send</response>
         [HttpPost, Authorize]
         public IActionResult PostQuestionTexte([FromBody] Question question)
 
@@ -73,7 +91,14 @@ namespace buzzerApi.Controllers
         }
 
 
-        // POST api/values/postquestionmedia
+        /// <summary>
+        /// Creates a Question with media propositions.
+        /// </summary>
+        /// <param name="request">Form-data of the request with files and data</param>
+        /// <param name="media">Media type[Audio;Image]</param>
+        /// <returns>A newly created Question</returns>
+        /// <response code="201">Returns the newly created question</response>
+        /// <response code="400">No files send or no question send</response>
         [HttpPost("{media}"), Authorize]
         public async Task<IActionResult> PostQuestionMedia(IFormCollection request, MediaType media)
 
@@ -109,7 +134,13 @@ namespace buzzerApi.Controllers
             }
         }
 
-        // DELETE api/values/delete
+        /// <summary>
+        /// Delete a question.
+        /// </summary>
+        /// <param name="id">Id of the question</param>
+        /// <response code="200">The question has been successfully deleted</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Question not found</response>
         [HttpDelete, Authorize]
         public async Task<IActionResult> DeleteQuestion(Guid id)
         {

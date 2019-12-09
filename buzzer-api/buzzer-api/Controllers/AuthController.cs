@@ -16,6 +16,14 @@ namespace buzzerApi.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        /// <summary>
+        /// User authentification.
+        /// </summary>
+        /// <param name="user">User model with username and password</param>
+        /// <returns>An access token</returns>
+        /// <response code="200">Returns the access token</response>
+        /// <response code="401">Authentification failed</response>
+        /// <response code="500">Server Error</response>
         [HttpPost,AllowAnonymous]
         public async Task<ActionResult> Login(
             [FromBody] UserAuth user,

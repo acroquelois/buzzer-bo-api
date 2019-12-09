@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\acroquelois\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\acroquelois\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_buzzer-api.927520165.00" t="ExcludeRecursive" />
+    <e p="D:\université\ac'lab\buzzer-bo-api\buzzer-api" t="IncludeFlat">
+      <e p="buzzer-api" t="IncludeRecursive">
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="buzzerApi.csproj" t="IncludeRecursive" />
+        <e p="Controllers" t="Include">
+          <e p="AuthController.cs" t="Include" />
+          <e p="QuestionController.cs" t="Include" />
+          <e p="UserController.cs" t="Include" />
+        </e>
+        <e p="Dto" t="Include">
+          <e p="UserAuth.cs" t="Include" />
+          <e p="UserToken.cs" t="Include" />
+        </e>
+        <e p="Enum" t="Include">
+          <e p="AuthErrors.cs" t="Include" />
+        </e>
+        <e p="Extensions" t="Include">
+          <e p="ServiceCollectionExtensions.cs" t="Include" />
+        </e>
+        <e p="Models" t="Include">
+          <e p="BuzzerApiContext.cs" t="Include" />
+          <e p="Propositions.cs" t="Include" />
+          <e p="Question.cs" t="Include" />
+          <e p="QuestionType.cs" t="Include" />
+          <e p="User.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.2" t="Include">
+              <e p="buzzerApi.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+        </e>
+        <e p="Repository" t="Include">
+          <e p="Abstraction" t="Include">
+            <e p="IQuestionRepository.cs" t="Include" />
+            <e p="IUserRepository.cs" t="Include" />
+          </e>
+          <e p="QuestionRepository.cs" t="Include" />
+          <e p="UserRepository.cs" t="Include" />
+        </e>
+        <e p="Services" t="Include">
+          <e p="Abstraction" t="Include">
+            <e p="IAuthService.cs" t="Include" />
+            <e p="IQuestionService.cs" t="Include" />
+            <e p="IUserService.cs" t="Include" />
+          </e>
+          <e p="Authentification" t="Include">
+            <e p="AuthService.cs" t="Include" />
+          </e>
+          <e p="Questions" t="Include">
+            <e p="QuestionService.cs" t="Include" />
+          </e>
+          <e p="User" t="Include">
+            <e p="UserService.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Startup.cs" t="Include" />
+        <e p="wwwroot" t="Include" />
+      </e>
+      <e p="buzzer-api.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

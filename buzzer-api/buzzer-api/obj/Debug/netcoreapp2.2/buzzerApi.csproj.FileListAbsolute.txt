@@ -14,3 +14,4 @@ D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\obj\Debug\netcoreapp2.
 D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\obj\Debug\netcoreapp2.2\buzzerApi.RazorTargetAssemblyInfo.cache
 D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\obj\Debug\netcoreapp2.2\buzzerApi.dll
 D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\obj\Debug\netcoreapp2.2\buzzerApi.pdb
+D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\bin\Debug\netcoreapp2.2\buzzerApi.xml

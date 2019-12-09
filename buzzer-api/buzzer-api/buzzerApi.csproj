@@ -4,7 +4,13 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
+    <DocumentationFile>D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\buzzerApi.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
+    <Folder Include="..\..\..\..\ac%2527lab\buzzer-bo-api\buzzer-api\buzzer-api\Context\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -12,11 +18,15 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
     <PackageReference Include="MySql.Data" Version="8.0.18" />
     <PackageReference Include="MySql.Data.Entity" Version="7.0.7-m61" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.18" />
     <PackageReference Include="MySql.Web" Version="8.0.18" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="4.0.1" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
+using Swashbuckle.AspNetCore.Swagger;
+using System.Reflection;
 
 namespace buzzer_api
 {
@@ -38,6 +40,14 @@ namespace buzzer_api
                 .AddCustomOptions(_configuration)
                 .AddDbContext<BuzzerApiContext>(
                 options => options.UseMySQL(_configuration.GetConnectionString("BuzzerApiContext")));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Buzzer Api", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
 
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(5);
@@ -85,8 +95,13 @@ namespace buzzer_api
                 .UseCors("policy")
                 .UseAuthentication()
                 .UseSession() 
-                .UseMvc();
-                
+                .UseMvc()
+                .UseSwagger()
+                .UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Buzzer API V1");
+                });
+
 
             // UseCors before Mvc
 

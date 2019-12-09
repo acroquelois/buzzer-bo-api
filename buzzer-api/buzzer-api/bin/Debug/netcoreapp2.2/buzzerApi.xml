@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>buzzerApi</name>
+    </assembly>
+    <members>
+        <member name="M:buzzerApi.Controllers.AuthController.Login(buzzerApi.Dto.UserAuth,buzzerApi.Services.Abstraction.IAuthService)">
+            <summary>
+            User authentification.
+            </summary>
+            <param name="user">User model with username and password</param>
+            <returns>An access token</returns>
+            <response code="200">Returns the access token</response>
+            <response code="401">Authentification failed</response>
+            <response code="500">Server Error</response>
+        </member>
+        <member name="M:buzzerApi.Controllers.QuestionController.GetQuestions">
+            <summary>
+            Return a random question.
+            </summary>
+            <returns>A random question</returns>
+            <response code="200">Returns the question</response>
+            <response code="400">Bad request</response>
+            <response code="404">Question not found</response>
+        </member>
+        <member name="M:buzzerApi.Controllers.QuestionController.GetQuestion(System.Int32)">
+            <summary>
+            Get question by id.
+            </summary>
+            <param name="id">Id of the question</param>
+            <returns>The specified question</returns>
+        </member>
+        <member name="M:buzzerApi.Controllers.QuestionController.PostQuestionTexte(buzzerApi.Models.Question)">
+            <summary>
+            Creates a Question with string proposition.
+            </summary>
+            <param name="question">Question model</param>
+            <returns>A newly created Question</returns>
+            <response code="201">Returns the newly created question</response>
+            <response code="400">No files send or no question send</response>
+        </member>
+        <member name="M:buzzerApi.Controllers.QuestionController.PostQuestionMedia(Microsoft.AspNetCore.Http.IFormCollection,buzzerApi.Enum.MediaType)">
+            <summary>
+            Creates a Question with media propositions.
+            </summary>
+            <param name="request">Form-data of the request with files and data</param>
+            <param name="media">Media type[Audio;Image]</param>
+            <returns>A newly created Question</returns>
+            <response code="201">Returns the newly created question</response>
+            <response code="400">No files send or no question send</response>
+        </member>
+        <member name="M:buzzerApi.Controllers.QuestionController.DeleteQuestion(System.Guid)">
+            <summary>
+            Delete a question.
+            </summary>
+            <param name="id">Id of the question</param>
+            <response code="200">The question has been successfully deleted</response>
+            <response code="400">Bad request</response>
+            <response code="404">Question not found</response>
+        </member>
+        <member name="M:buzzerApi.Controllers.UserController.GetUser(System.Guid)">
+            <summary>
+            Get a user by his id.
+            </summary>
+            <param name="id">Id of the user</param>
+            <returns>The specified user</returns>
+            <response code="200">Returns the user</response>
+        </member>
+        <member name="M:buzzerApi.Controllers.UserController.CreateUser(buzzerApi.Models.User,buzzerApi.Services.Abstraction.IUserService)">
+            <summary>
+            Return a random question.
+            </summary>
+            <param name="user">User model</param>
+            <returns>A random question</returns>
+            <response code="200">Returns the question</response>
+            <response code="400">Bad request</response>
+            <response code="404">Question not found</response>
+        </member>
+        <member name="M:buzzerApi.Controllers.UserController.GetUserByMail(System.String,buzzerApi.Services.Abstraction.IUserService)">
+            <summary>
+            Get a user by his mail.
+            </summary>
+            <param name="mail">Mail of the user</param>
+            <returns>The specified user</returns>
+            <response code="200">Returns the user</response>
+            <response code="400">Bad request</response>
+            <response code="404">Mail doesn't match with a user</response>
+        </member>
+        <member name="M:buzzerApi.Extensions.ServiceCollectionExtensions.ConfigureAndValidateSingleton``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Registers <see cref="T:Microsoft.Extensions.Options.IOptions`1"/> and <typeparamref name="TOptions"/> to the services container.
+            Also runs data annotation validation.
+            </summary>
+            <typeparam name="TOptions">The type of the options.</typeparam>
+            <param name="services">The services collection.</param>
+            <param name="configuration">The configuration.</param>
+            <returns>The same services collection.</returns>
+        </member>
+        <member name="M:buzzerApi.Services.Authentification.AuthService.GenerateToken(buzzerApi.Models.User)">
+            <summary>
+            Generates token by given user
+            Ecrypt the token and return it
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:buzzerApi.Services.Authentification.AuthService.IsTokenValid(System.String)">
+            <summary>
+            Validates whether a given token is valid or not, and returns true in case the token is valid otherwise it will return false
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:buzzerApi.Services.Authentification.AuthService.GetSymmetricSecurityKey">
+            <summary>
+            Takes the secret key and converts it to byte array and returns new SecurityKey
+            </summary> 
+        </member>
+        <member name="M:buzzerApi.Services.Authentification.AuthService.GetTokenValidationParameters">
+            <summary>
+            Creates new instance of TokenValidationParameters
+            </summary>
+        </member>
+    </members>
+</doc>
