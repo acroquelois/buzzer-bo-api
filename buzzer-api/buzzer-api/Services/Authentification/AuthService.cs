@@ -1,32 +1,28 @@
 ﻿using buzzerApi.Dto;
 using buzzerApi.Enum;
-using buzzerApi.Models;
-using buzzerApi.Options;
 using buzzerApi.Services.Abstraction;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace buzzerApi.Services.Authentification
 {
     public class AuthService : IAuthService
     {
-        public AuthService(AuthOptions authOption, IPasswordHasher<Models.User> passwordHasher, IUserService userService)
+        public AuthService(IPasswordHasher<Models.User> passwordHasher, IUserService userService, IConfiguration configuration)
         {
-            _authOptions = authOption;
             _passwordHasher = passwordHasher;
             _userService = userService;
+            _configuration = configuration;
         }
 
-        private readonly AuthOptions _authOptions;
         private readonly IPasswordHasher<Models.User> _passwordHasher;
         private readonly IUserService _userService;
+        private readonly IConfiguration _configuration;
 
         public (AuthErrors, UserToken) LoginAsync(Models.User userAuth)
         {
@@ -61,7 +57,7 @@ namespace buzzerApi.Services.Authentification
         public UserToken GenerateToken(Models.User user)
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            var keyByteArray = Encoding.ASCII.GetBytes(_authOptions.SecretKey);
+            var keyByteArray = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("Auth:Key"));
             var signinKey = new SymmetricSecurityKey(keyByteArray);
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -70,8 +66,8 @@ namespace buzzerApi.Services.Authentification
                     new Claim(ClaimTypes.Sid, user.Email.ToString()),
                     new Claim("app", "buzzer")
                 }),
-                Expires = DateTime.UtcNow.AddSeconds(_authOptions.ExpireMinutes),
-                SigningCredentials = new SigningCredentials(signinKey, _authOptions.SecurityAlgorithm)
+                Expires = DateTime.UtcNow.AddSeconds(_configuration.GetValue<int>("Auth:ExpireMinutes")),
+                SigningCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return new UserToken()
@@ -109,7 +105,7 @@ namespace buzzerApi.Services.Authentification
         /// </summary> 
         private SecurityKey GetSymmetricSecurityKey()
         {
-            byte[] symmetricKey = Convert.FromBase64String(_authOptions.SecretKey);
+            byte[] symmetricKey = Convert.FromBase64String(_configuration.GetValue<string>("Auth:Key"));
             return new SymmetricSecurityKey(symmetricKey);
         }
 

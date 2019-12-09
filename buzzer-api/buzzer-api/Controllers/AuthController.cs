@@ -1,18 +1,11 @@
 ﻿using buzzerApi.Dto;
 using buzzerApi.Enum;
-using buzzerApi.Models;
-using buzzerApi.Options;
 using buzzerApi.Services.Abstraction;
-using buzzerApi.Services.Authentification;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebSockets.Internal;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace buzzerApi.Controllers
 {
@@ -47,7 +40,7 @@ namespace buzzerApi.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet,Authorize]
         public ActionResult GetClaim()
         {
             try
