@@ -8,7 +8,9 @@ namespace buzzerApi.Repository.Abstraction
     public interface IQuestionRepository
     {
         Task CreateAsync(Question question);
-        Task<IEnumerable<Question>> ListAllQuestionTexte();
+        IEnumerable<Question> ListAllQuestionTexte();
         Task<bool> DeleteAsync(Guid id);
+        Question ListOneQuestionTexte(Guid id);
+        Question ListRandomQuestionTexte();
     }
 }

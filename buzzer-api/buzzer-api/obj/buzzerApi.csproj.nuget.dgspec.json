@@ -1,26 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "D:\\université\\ac'lab\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzerApi.csproj": {}
+    "C:\\Users\\johan\\Documents\\PROJET_BUZZER\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzerApi.csproj": {}
   },
   "projects": {
-    "D:\\université\\ac'lab\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzerApi.csproj": {
+    "C:\\Users\\johan\\Documents\\PROJET_BUZZER\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzerApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\université\\ac'lab\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzerApi.csproj",
+        "projectUniqueName": "C:\\Users\\johan\\Documents\\PROJET_BUZZER\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzerApi.csproj",
         "projectName": "buzzerApi",
-        "projectPath": "D:\\université\\ac'lab\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzerApi.csproj",
-        "packagesPath": "C:\\Users\\acroquelois\\.nuget\\packages\\",
-        "outputPath": "D:\\université\\ac'lab\\buzzer-bo-api\\buzzer-api\\buzzer-api\\obj\\",
+        "projectPath": "C:\\Users\\johan\\Documents\\PROJET_BUZZER\\buzzer-bo-api\\buzzer-api\\buzzer-api\\buzzerApi.csproj",
+        "packagesPath": "C:\\Users\\johan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\johan\\Documents\\PROJET_BUZZER\\buzzer-bo-api\\buzzer-api\\buzzer-api\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\acroquelois\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\johan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.2"

@@ -21,14 +21,24 @@ namespace buzzerApi.Services
             await _repository.CreateAsync(question);
         }
 
-        public async Task<IEnumerable<Question>> GetListAllQuestionTexte()
+        public IEnumerable<Question> GetListAllQuestionTexte()
         {
-            return await _repository.ListAllQuestionTexte();
+            return _repository.ListAllQuestionTexte();
         }
 
         public async Task<bool> DeleteQuestion(Guid id)
         {
             return await _repository.DeleteAsync(id);
+        }
+
+        public Question GetListOneQuestionTexte(Guid id)
+        {
+            return _repository.ListOneQuestionTexte(id);
+        }
+
+        public Question GetListRandomQuestionTexte()
+        {
+            return _repository.ListRandomQuestionTexte();
         }
     }
 }
