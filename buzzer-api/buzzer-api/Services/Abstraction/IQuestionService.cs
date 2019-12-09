@@ -10,8 +10,10 @@ namespace buzzerApi.Services.Abstraction
     {
         Task CreateQuestionTexte(Question question);
 
-        Task<IEnumerable<Question>> GetListAllQuestionTexte();
+        IEnumerable<Question> GetListAllQuestionTexte();
 
         Task<bool> DeleteQuestion(Guid id);
+        Question GetListOneQuestionTexte(Guid id);
+        Question GetListRandomQuestionTexte();
     }
 }

@@ -21,11 +21,11 @@ namespace buzzerApi.Controllers
 
         // GET api/question/get
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Question>>> Get()
+        public ActionResult<IEnumerable<Question>> Get()
         {
             try
             {
-                var question = await _questionService.GetListAllQuestionTexte();
+                var question = _questionService.GetListAllQuestionTexte();
                 return Ok(question);
             }
             catch (Exception ex)
@@ -37,9 +37,17 @@ namespace buzzerApi.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<Question> Get(Guid id)
         {
-            return "value";
+            try
+            {
+                var question = _questionService.GetListOneQuestionTexte(id);
+                return Ok(question);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         // POST api/values/postquestiontexte
@@ -70,6 +78,14 @@ namespace buzzerApi.Controllers
             {
                 return BadRequest(ex);
             }
+        }
+
+        // GET api/question/random
+        [HttpGet]
+        public ActionResult<Question> Random()
+        {
+            var question = _questionService.GetListRandomQuestionTexte();
+            return Ok(question);
         }
     }
 }

@@ -1,0 +1,15 @@
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\bin\Release\netcoreapp2.2\appsettings.Development.json
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\bin\Release\netcoreapp2.2\appsettings.json
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\bin\Release\netcoreapp2.2\Properties\launchSettings.json
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\bin\Release\netcoreapp2.2\buzzerApi.deps.json
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\bin\Release\netcoreapp2.2\buzzerApi.runtimeconfig.json
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\bin\Release\netcoreapp2.2\buzzerApi.runtimeconfig.dev.json
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\bin\Release\netcoreapp2.2\buzzerApi.dll
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\bin\Release\netcoreapp2.2\buzzerApi.pdb
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\obj\Release\netcoreapp2.2\buzzerApi.RazorAssemblyInfo.cache
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\obj\Release\netcoreapp2.2\buzzerApi.RazorAssemblyInfo.cs
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\obj\Release\netcoreapp2.2\buzzerApi.AssemblyInfoInputs.cache
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\obj\Release\netcoreapp2.2\buzzerApi.AssemblyInfo.cs
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\obj\Release\netcoreapp2.2\buzzerApi.RazorTargetAssemblyInfo.cache
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\obj\Release\netcoreapp2.2\buzzerApi.dll
+C:\Users\johan\Documents\PROJET_BUZZER\buzzer-bo-api\buzzer-api\buzzer-api\obj\Release\netcoreapp2.2\buzzerApi.pdb
