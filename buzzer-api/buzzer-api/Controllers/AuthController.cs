@@ -1,13 +1,10 @@
 ﻿using buzzerApi.Dto;
 using buzzerApi.Enum;
-using buzzerApi.Options;
 using buzzerApi.Services.Abstraction;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace buzzerApi.Controllers
@@ -27,7 +24,8 @@ namespace buzzerApi.Controllers
         [HttpPost,AllowAnonymous]
         public async Task<ActionResult> Login(
             [FromBody] UserAuth user,
-            [FromServices] IAuthService authService
+            [FromServices] IAuthService authService,
+            [FromServices] ILogger<AuthController> logger
             )
         {
             try
@@ -35,18 +33,21 @@ namespace buzzerApi.Controllers
                 var (authError,token) = await authService.LoginAsync(new Models.User { Email = user.Email, Password = user.Password });
                 if (authError == AuthErrors.EmptyUsername)
                 {
+                    logger.LogInformation("Connexion attempt failed by empty user");
                     return Unauthorized(new { Message = "Utilisateur ou mot de passe incorrect." });
                 }
 
                 if (authError == AuthErrors.Forbidden)
                 {
+                    logger.LogInformation("Connexion attempt failed by {User}", user.Email);
                     return Unauthorized(new { Message = "Utilisateur ou mot de passe incorrect." });
                 }
-
+                logger.LogInformation("Connexion by {User}", user.Email);
                 return Ok(token);
             }
             catch(Exception e)
             {
+                logger.LogWarning("Server error at user connexion");
                 return StatusCode(500, new { Message = "Server Error", Trace = e.StackTrace });
             }
         }

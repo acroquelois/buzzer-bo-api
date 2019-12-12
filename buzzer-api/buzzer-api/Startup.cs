@@ -96,10 +96,12 @@ namespace buzzer_api
                 .UseAuthentication()
                 .UseSession() 
                 .UseMvc()
+                .UseStaticFiles()
                 .UseSwagger()
                 .UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Buzzer API V1");
+                    c.InjectStylesheet("/swagger-ui/theme-material.css");
                 });
 
 

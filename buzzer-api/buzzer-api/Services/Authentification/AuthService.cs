@@ -39,17 +39,24 @@ namespace buzzerApi.Services.Authentification
             {
                 return (AuthErrors.EmptyUsername, null);
             }
-            var user = await _userService.GetUserAsync(userAuth.Email);
-            PasswordVerificationResult result = _passwordHasher.VerifyHashedPassword(user, user.Password, userAuth.Password.Trim());
+            try
+            {
+                var user = await _userService.GetUserAsync(userAuth.Email);
+                PasswordVerificationResult result = _passwordHasher.VerifyHashedPassword(user, user.Password, userAuth.Password.Trim());
 
-            if (result == PasswordVerificationResult.Failed)
+                if (result == PasswordVerificationResult.Failed)
+                {
+                    return (AuthErrors.Forbidden, null);
+                }
+
+                UserToken accessToken = this.GenerateToken(user);
+
+                return (AuthErrors.None, accessToken);
+            }
+            catch
             {
                 return (AuthErrors.Forbidden, null);
             }
-
-            UserToken accessToken = this.GenerateToken(user);
-
-            return (AuthErrors.None, accessToken);
         }
 
 
