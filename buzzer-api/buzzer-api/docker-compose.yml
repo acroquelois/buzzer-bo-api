@@ -3,7 +3,7 @@ services:
     mysql:
         image: mysql/mysql-server:8.0.18
         container_name: my_mysql
-        port:
+        ports:
           - '5959:3306'
         environment:
           MYSQL_ROOT_HOST: '%'
