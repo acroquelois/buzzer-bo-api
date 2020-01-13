@@ -26,6 +26,7 @@ namespace buzzerApi.Controllers
             [FromBody] UserAuth user,
             [FromServices] IAuthService authService,
             [FromServices] ILogger<AuthController> logger
+
             )
         {
             try
@@ -33,7 +34,7 @@ namespace buzzerApi.Controllers
                 var (authError,token) = await authService.LoginAsync(new Models.User { Email = user.Email, Password = user.Password });
                 if (authError == AuthErrors.EmptyUsername)
                 {
-                    logger.LogInformation("Connexion attempt failed by empty user");
+                    logger.LogWarning("Connexion attempt failed by empty user");
                     return Unauthorized(new { Message = "Utilisateur ou mot de passe incorrect." });
                 }
 

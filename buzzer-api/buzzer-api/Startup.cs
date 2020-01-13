@@ -34,13 +34,16 @@ namespace buzzer_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //string mysql = String.Concat("server=", Environment.GetEnvironmentVariable("DATABASE_URL"));
+            //mysql = String.Concat(mysql, ";user=root;database=buzzer;password=admin");
+            //"server=db;user=root;database=buzzer;password=admin"
+            //_configuration.GetConnectionString("BuzzerApiContext")
             services
                 .AddCustomServices()
                 .AddCustomAuth(_configuration)
                 .AddCustomOptions(_configuration)
                 .AddDbContext<BuzzerApiContext>(
-                options => options.UseMySQL(_configuration.GetConnectionString("BuzzerApiContext")));
-
+                options => options.UseMySQL("server=db;user=root;database=buzzer;password=admin"));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Buzzer Api", Version = "v1" });
@@ -104,9 +107,23 @@ namespace buzzer_api
                     c.InjectStylesheet("/swagger-ui/theme-material.css");
                 });
 
+            UpdateDatabase(app);
 
             // UseCors before Mvc
 
+        }
+
+        private static void UpdateDatabase(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<BuzzerApiContext>())
+                {
+                    context.Database.Migrate();
+                }
+            }
         }
     }
 }

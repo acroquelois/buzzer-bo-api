@@ -1,8 +1,11 @@
 ﻿using buzzerApi.Models;
+using buzzerApi.Options;
 using buzzerApi.Services.Abstraction;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +16,19 @@ namespace buzzerApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+
+
+
+        public UserController(ILogger<UserController> logger, IOptions<LogEventOptions> logOptions, IUserService userService)
+        {
+            _logger = logger;
+            _logOptions = logOptions;
+            _userService = userService;
+        }
+
+        private readonly ILogger<UserController> _logger;
+        private readonly IOptions<LogEventOptions> _logOptions;
+        private readonly IUserService _userService;
 
         /// <summary>
         /// Get a user by his id.
@@ -36,17 +52,18 @@ namespace buzzerApi.Controllers
         /// <response code="404">Question not found</response>
         [HttpPost, AllowAnonymous]
         public async Task<ActionResult> CreateUser(
-            [FromBody] User user,
-            [FromServices] IUserService userService
+            [FromBody] User user
             )
         {
             try
             {
-                User newUser = await userService.CreateUserAsync(user);
+                User newUser = await _userService.CreateUserAsync(user);
+                _logger.LogInformation(_logOptions.Value.CreateItem,"User : A new user was create");
                 return CreatedAtAction("GetUser", new { id = newUser.Id}, newUser);
             }
             catch (Exception e)
             {
+                _logger.LogError(_logOptions.Value.CreateItem,"User : Error at user creation");
                 return BadRequest(e);
             }
         }
@@ -61,23 +78,44 @@ namespace buzzerApi.Controllers
         /// <response code="404">Mail doesn't match with a user</response>
         [HttpGet, Authorize]
         public async Task<ActionResult> GetUserByMail(
-            string mail,
-            [FromServices] IUserService userService
+            string mail
             )
         {
             try
             {
-                var ret = await userService.GetUserAsync(mail);
+                var ret = await _userService.GetUserAsync(mail);
                 if(ret == null)
                 {
+                    _logger.LogWarning(_logOptions.Value.GetItem, "The user {mail} doesn't exist", mail);
                     return NotFound("This email doesn't exist");
                 }
+                _logger.LogInformation(_logOptions.Value.GetItem, "The user {user} was get by his mail", mail);
                 return Ok(ret);
             }
             catch (Exception e)
             {
+                _logger.LogError(_logOptions.Value.GetItem, "Server error at get user by mail");
                 return BadRequest(e);
             }
+        }
+
+        [HttpGet]
+        public ActionResult testenv()
+        {
+           try
+           {
+                var enumerator = Environment.GetEnvironmentVariables().GetEnumerator();
+                var test = "";
+                while (enumerator.MoveNext())
+                {
+                    test = String.Concat(test , ($"{enumerator.Key,5}:{enumerator.Value,100} ---------"));
+                }
+                return Ok(test);
+           }
+           catch (Exception e)
+           {
+               return BadRequest(e);
+           }
         }
 
         //[HttpGet, Authorize]

@@ -90,6 +90,7 @@ namespace buzzerApi.Extensions
         {
             services
                 .ConfigureAndValidateSingleton<AuthOptions>(configuration.GetSection(nameof(ApplicationOptions.Auth)))
+                .ConfigureAndValidateSingleton<LogEventOptions>(configuration.GetSection(nameof(ApplicationOptions.LogEvent)))
                 .ConfigureAndValidateSingleton<UploadOptions>(configuration.GetSection(nameof(ApplicationOptions.Upload)));
             return services;
         }
