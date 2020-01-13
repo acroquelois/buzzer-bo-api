@@ -1,22 +1,24 @@
-mysql:
-    image: mysql/mysql-server:8.0.18
-    container_name: my_mysql
-    ports:
-      - '5959:3306'
-    environment:
-      MYSQL_ROOT_HOST: '%'
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'pass'
-netapi:
-    build: .
-    depends_on: 
-      mysql:
-        condition: service_healthy
-    container_name: my_dotnet_api
-    ports:
-      - '5252:80'
-    links:
-      - mysql:db
-    environment:
-      - DATABASE_URL=db
+version: "2.2"
+services:
+    mysql:
+        image: mysql/mysql-server:8.0.18
+        container_name: my_mysql
+        port:
+          - '5959:3306'
+        environment:
+          MYSQL_ROOT_HOST: '%'
+          MYSQL_ROOT_PASSWORD: admin
+          MYSQL_USER: 'user'
+          MYSQL_PASSWORD: 'pass'
+    netapi:
+        build: .
+        depends_on: 
+          mysql:
+            condition: service_healthy
+        container_name: my_dotnet_api
+        ports:
+          - '5252:80'
+        links:
+          - mysql:db
+        environment:
+          - DATABASE_URL=db
