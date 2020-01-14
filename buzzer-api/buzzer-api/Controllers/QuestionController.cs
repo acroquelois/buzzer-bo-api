@@ -91,8 +91,9 @@ namespace buzzerApi.Controllers
             try
             {
                 var newQuestion =  _questionService.CreateQuestion(question);
-                _logger.LogInformation(_logEvent.Value.CreateItem, "{Question} : A new question text was created", _logInformation);
-                return CreatedAtAction("GetQuestion", new { id = newQuestion.Id}, newQuestion);
+                // _logger.LogInformation(_logEvent.Value.CreateItem, "{Question} : A new question text was created", _logInformation);
+                // return CreatedAtAction("GetQuestion", new { id = newQuestion.Id}, newQuestion);
+                return Ok(newQuestion);
             }
             catch(Exception ex)
             {

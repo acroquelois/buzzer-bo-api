@@ -23,6 +23,7 @@ namespace buzzerApi.Repository
             await db.SaveChangesAsync();
         }
 
+
         public async Task<IEnumerable<Question>> ListAllQuestionTexte()
         {
             return await db.Question.ToListAsync();
