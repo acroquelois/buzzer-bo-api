@@ -1,7 +1,7 @@
 version: "3"
 services:
     mysql:
-        image: mysql/mysql-server:8.0.18
+        image: mysql/mysql-server:5.7
         container_name: my_mysql
         environment:
           MYSQL_ROOT_HOST: '%'
@@ -12,7 +12,8 @@ services:
         build: .
         restart: always
         depends_on: 
-          - mysql
+          mysql:
+            s
         container_name: my_dotnet_api
         ports:
           - '80:80'
