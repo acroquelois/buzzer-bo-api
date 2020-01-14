@@ -182,7 +182,7 @@ namespace buzzerApi.Controllers
         /// Get random question.
         /// </summary>
         /// <returns>Random question</returns>
-        [HttpGet, Authorize]
+        [HttpGet]
         public async Task<ActionResult<Question>> GetRandomQuestion()
         {
             try
