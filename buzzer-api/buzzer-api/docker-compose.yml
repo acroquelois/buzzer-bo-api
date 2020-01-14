@@ -1,4 +1,4 @@
-version: "3"
+version: "2.2"
 services:
     mysql:
         image: mysql/mysql-server:5.7
@@ -13,7 +13,7 @@ services:
         restart: always
         depends_on: 
           mysql:
-            s
+            condition: service_healthy
         container_name: my_dotnet_api
         ports:
           - '80:80'
