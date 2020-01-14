@@ -1,4 +1,4 @@
-version: "2.2"
+version: "3"
 services:
     mysql:
         image: mysql/mysql-server:8.0.18
@@ -10,6 +10,9 @@ services:
           MYSQL_PASSWORD: 'pass'
     netapi:
         build: .
+        restart: always
+        depends_on: 
+          - mysql
         container_name: my_dotnet_api
         ports:
           - '80:80'
