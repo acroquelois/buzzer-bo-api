@@ -43,7 +43,7 @@ namespace buzzer_api
                 .AddCustomAuth(_configuration)
                 .AddCustomOptions(_configuration)
                 .AddDbContext<BuzzerApiContext>(
-                options => options.UseMySQL("server=db;user=root;database=buzzer;password=admin"));
+                options => options.UseMySQL(_configuration.GetConnectionString("BuzzerApiContext")));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Buzzer Api", Version = "v1" });

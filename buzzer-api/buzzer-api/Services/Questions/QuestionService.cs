@@ -1,8 +1,10 @@
 ﻿using buzzerApi.Models;
 using buzzerApi.Repository.Abstraction;
 using buzzerApi.Services.Abstraction;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace buzzerApi.Services
@@ -30,6 +32,11 @@ namespace buzzerApi.Services
         public async Task<bool> DeleteQuestion(Guid id)
         {
             return await _repository.DeleteAsync(id);
+        }
+
+        public async Task<Question> GetRandomQuestion()
+        {
+            return await _repository.GetRandomQuestion();
         }
     }
 }

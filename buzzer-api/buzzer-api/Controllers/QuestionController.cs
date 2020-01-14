@@ -176,5 +176,31 @@ namespace buzzerApi.Controllers
                 return BadRequest(ex);
             }
         }
+
+        /// <summary>
+        /// Get random question.
+        /// </summary>
+        /// <returns>Random question</returns>
+        [HttpGet, Authorize]
+        public async Task<ActionResult<Question>> GetRandomQuestion()
+        {
+            try
+            {
+                var question = await _questionService.GetRandomQuestion();
+                if (question == null)
+                {
+                    _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);
+                    return NotFound("There is no question");
+                }
+                _logger.LogInformation(_logEvent.Value.GetItem, "{Question} : List of all questions returned", _logInformation);
+                return Ok(question);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Question : Server error at get list question");
+                return BadRequest(ex);
+            }
+        }
+
     }
 }

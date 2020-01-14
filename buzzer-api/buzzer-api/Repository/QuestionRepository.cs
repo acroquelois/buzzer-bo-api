@@ -42,5 +42,50 @@ namespace buzzerApi.Repository
                 return false;
             }
         }
+
+        public async Task<Question> GetRandomQuestion()
+        {
+            try
+            {
+                var question = await db.Question.FirstAsync();
+                return question;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        //[HttpGet, Authorize]
+        //public ActionResult SetSession()
+        //{
+        //    try
+        //    {
+        //        var context = HttpContext.Session;
+        //        byte[] ret = Encoding.ASCII.GetBytes("true");
+        //        context.Set("test",ret);
+        //        return Ok();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return BadRequest(e);
+        //    }
+        //}
+
+        //[HttpGet, Authorize]
+        //public ActionResult GetSession()
+        //{
+        //    try
+        //    {
+        //        var context = HttpContext.Session;
+        //        var ret = context.Get("test");
+        //        return Ok(ret);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return BadRequest(e);
+        //    }
+        //}
     }
 }
