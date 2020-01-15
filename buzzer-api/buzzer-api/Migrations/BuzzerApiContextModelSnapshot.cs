@@ -33,7 +33,7 @@ namespace buzzerApi.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Propositions");
+                    b.ToTable("Proposition");
                 });
 
             modelBuilder.Entity("buzzerApi.Models.Question", b =>
@@ -68,6 +68,23 @@ namespace buzzerApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("QuestionType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "TEXTE",
+                            Type = "texte"
+                        },
+                        new
+                        {
+                            Id = "AUDIO",
+                            Type = "audio"
+                        },
+                        new
+                        {
+                            Id = "IMAGE",
+                            Type = "image"
+                        });
                 });
 
             modelBuilder.Entity("buzzerApi.Models.User", b =>

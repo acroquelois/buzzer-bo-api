@@ -9,7 +9,7 @@ using buzzerApi.Models;
 namespace buzzerApi.Migrations
 {
     [DbContext(typeof(BuzzerApiContext))]
-    [Migration("20200113122415_Initial")]
+    [Migration("20200115164443_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,7 +35,7 @@ namespace buzzerApi.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Propositions");
+                    b.ToTable("Proposition");
                 });
 
             modelBuilder.Entity("buzzerApi.Models.Question", b =>
@@ -70,6 +70,23 @@ namespace buzzerApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("QuestionType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "TEXTE",
+                            Type = "texte"
+                        },
+                        new
+                        {
+                            Id = "AUDIO",
+                            Type = "audio"
+                        },
+                        new
+                        {
+                            Id = "IMAGE",
+                            Type = "image"
+                        });
                 });
 
             modelBuilder.Entity("buzzerApi.Models.User", b =>

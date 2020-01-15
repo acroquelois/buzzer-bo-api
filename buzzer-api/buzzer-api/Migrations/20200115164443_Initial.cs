@@ -54,7 +54,7 @@ namespace buzzerApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Propositions",
+                name: "Proposition",
                 columns: table => new
                 {
                     Id = table.Column<byte[]>(nullable: false),
@@ -63,18 +63,33 @@ namespace buzzerApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Propositions", x => x.Id);
+                    table.PrimaryKey("PK_Proposition", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Propositions_Question_QuestionId",
+                        name: "FK_Proposition_Question_QuestionId",
                         column: x => x.QuestionId,
                         principalTable: "Question",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "QuestionType",
+                columns: new[] { "Id", "Type" },
+                values: new object[] { "TEXTE", "texte" });
+
+            migrationBuilder.InsertData(
+                table: "QuestionType",
+                columns: new[] { "Id", "Type" },
+                values: new object[] { "AUDIO", "audio" });
+
+            migrationBuilder.InsertData(
+                table: "QuestionType",
+                columns: new[] { "Id", "Type" },
+                values: new object[] { "IMAGE", "image" });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Propositions_QuestionId",
-                table: "Propositions",
+                name: "IX_Proposition_QuestionId",
+                table: "Proposition",
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
@@ -86,7 +101,7 @@ namespace buzzerApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Propositions");
+                name: "Proposition");
 
             migrationBuilder.DropTable(
                 name: "User");
