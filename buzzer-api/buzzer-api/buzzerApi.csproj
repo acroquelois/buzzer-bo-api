@@ -6,7 +6,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\buzzerApi.xml</DocumentationFile>
+    <DocumentationFile>D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\buzzer.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
