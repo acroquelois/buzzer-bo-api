@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup>
     <NoWarn>1701;1702;1591</NoWarn>
     <DocumentationFile>D:\université\ac'lab\buzzer-bo-api\buzzer-api\buzzer-api\buzzer.xml</DocumentationFile>
   </PropertyGroup>
