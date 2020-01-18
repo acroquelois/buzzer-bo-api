@@ -23,6 +23,12 @@ namespace buzzerApi.Repository
             await db.SaveChangesAsync();
         }
 
+        public async Task<Question> GetQuestion(Guid id)
+        {
+            var question = await db.Question.FirstOrDefaultAsync(p => p.Id == id);
+            return question;
+        }
+
 
         public async Task<IEnumerable<Question>> ListAllQuestionTexte()
         {
