@@ -14,7 +14,7 @@ namespace buzzerApi.Models
         public string Interogation { get; set; }
 
         [Required]
-        public string Reponse { get; set; }
+        public int Reponse { get; set; }
 
         [ForeignKey("QuestionTypeId")]
         public QuestionType QuestionType { get; set; }
