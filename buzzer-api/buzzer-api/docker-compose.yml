@@ -1,35 +1,55 @@
 version: "2.2"
 services:
-    mysql:
-        image: mysql/mysql-server:5.7
-        restart: always
-        container_name: my_mysql
-        environment:
-          MYSQL_ROOT_HOST: '%'
-          MYSQL_ROOT_PASSWORD: admin
-          MYSQL_USER: 'user'
-          MYSQL_PASSWORD: 'pass'
-    netapi:
-        build: .
-        restart: always
-        container_name: my_dotnet_api
-        ports:
-          - '80:80'
-        links:
-          - mysql:db
-    swagger:
-        image: swaggerapi/swagger-ui
-        restart: always
-        container_name: my_swagger
-        ports:
-          - '4444:8080'
-        environment:
-          - URL=netapi/swagger/v1/swagger.json
-    seq:
-        image: datalust/seq
-        restart: always
-        container_name: my_seq
-        ports:
-          - '3333:80'
-        environment: 
-          - ACCEPT_EULA=Y
+  mysql:
+    image: mysql/mysql-server:5.7
+    restart: always
+    container_name: my_mysql
+    environment:
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'pass'
+    networks:
+      - buzzer
+  netapi:
+    build: .
+    restart: always
+    container_name: my_dotnet_api
+    ports:
+      - '80:80'
+    links:
+      - mysql:db
+    networks:
+      buzzer:
+        ipv4_address: 172.16.238.10 
+  swagger:
+    image: swaggerapi/swagger-ui
+    restart: always
+    container_name: my_swagger
+    ports:
+      - '4444:8080'
+    links:
+      - netapi:api
+    environment:
+      - URL=http://buzzer1.westeurope.cloudapp.azure.com/swagger/v1/swagger.json
+    networks:
+      - buzzer
+  seq:
+    image: datalust/seq
+    restart: always
+    container_name: my_seq
+    ports:
+      - '3333:80'
+    environment: 
+      - ACCEPT_EULA=Y
+    networks:
+      buzzer:
+        ipv4_address: 172.16.238.9 
+networks:
+  buzzer:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+          gateway: 172.16.238.1

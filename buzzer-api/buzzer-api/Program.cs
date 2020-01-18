@@ -14,7 +14,7 @@ namespace buzzer_api
             .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
             .Enrich.FromLogContext()
             .WriteTo.Console()
-            .WriteTo.Seq("http://localhost:3333")
+            .WriteTo.Seq("http://172.16.238.9:5341")
             .CreateLogger();
         
             try
