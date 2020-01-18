@@ -2,6 +2,7 @@ version: "2.2"
 services:
     mysql:
         image: mysql/mysql-server:5.7
+        restart: always
         container_name: my_mysql
         environment:
           MYSQL_ROOT_HOST: '%'
@@ -20,6 +21,7 @@ services:
           - DATABASE_URL=db
     swagger:
         image: swaggerapi/swagger-ui
+        restart: always
         container_name: my_swagger
         ports:
           - '4444:8080'
