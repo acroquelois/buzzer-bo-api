@@ -24,6 +24,10 @@ namespace buzzerApi.Services
             return question;
         }
 
+        public async Task<Question> GetQuestionById(Guid id)
+        {
+            return await _repository.GetQuestion(id);
+        }
         public async Task<IEnumerable<Question>> GetListAllQuestion()
         {
             return await _repository.ListAllQuestionTexte();

@@ -73,9 +73,24 @@ namespace buzzerApi.Controllers
         /// <param name="id">Id of the question</param>
         /// <returns>The specified question</returns>
         [HttpGet("{id}"), Authorize]
-        public ActionResult<string> GetQuestion(int id)
+        public async Task<ActionResult> GetQuestion(Guid id)
         {
-            return "value";
+            try
+            {
+                var question = await _questionService.GetQuestionById(id);
+                if (question == null)
+                {
+                    _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);
+                    return NotFound("There is no question");
+                }
+                _logger.LogInformation(_logEvent.Value.GetItem, "{Question} : List of all questions returned", _logInformation);
+                return Ok(question);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Question : Server error at get list question");
+                return BadRequest(ex);
+            }
         }
 
         /// <summary>
