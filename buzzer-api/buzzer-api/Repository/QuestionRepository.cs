@@ -48,7 +48,10 @@ namespace buzzerApi.Repository
         {
             try
             {
-                var listQuestion = await db.Question.Include(p => p.Propositions).ToListAsync();
+                var listQuestion = await db.Question
+                    .Include(p => p.Propositions)
+                    .Include(p => p.QuestionType)
+                    .ToListAsync();
                 var question = listQuestion.First();
                 return question;
             }
