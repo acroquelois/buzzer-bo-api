@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using buzzerApi.Dto;
 using buzzerApi.Enum;
 using buzzerApi.Models;
 using buzzerApi.Options;
@@ -198,7 +199,7 @@ namespace buzzerApi.Controllers
         /// </summary>
         /// <returns>Random question</returns>
         [HttpGet]
-        public async Task<ActionResult<Question>> GetRandomQuestion()
+        public async Task<ActionResult<QuestionDto>> GetRandomQuestion()
         {
             try
             {

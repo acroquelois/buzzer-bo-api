@@ -1,4 +1,5 @@
-﻿using buzzerApi.Models;
+﻿using buzzerApi.Dto;
+using buzzerApi.Models;
 using buzzerApi.Repository.Abstraction;
 using buzzerApi.Services.Abstraction;
 using Microsoft.AspNetCore.Http;
@@ -38,9 +39,10 @@ namespace buzzerApi.Services
             return await _repository.DeleteAsync(id);
         }
 
-        public async Task<Question> GetRandomQuestion()
+        public async Task<QuestionDto> GetRandomQuestion()
         {
-            return await _repository.GetRandomQuestion();
+            var question = await _repository.GetRandomQuestion();
+            return question.ToDto();
         }
     }
 }

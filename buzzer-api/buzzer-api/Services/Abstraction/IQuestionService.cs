@@ -1,4 +1,5 @@
-﻿using buzzerApi.Models;
+﻿using buzzerApi.Dto;
+using buzzerApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,6 +16,6 @@ namespace buzzerApi.Services.Abstraction
 
         Task<bool> DeleteQuestion(Guid id);
 
-        Task<Question> GetRandomQuestion();
+        Task<QuestionDto> GetRandomQuestion();
     }
 }
