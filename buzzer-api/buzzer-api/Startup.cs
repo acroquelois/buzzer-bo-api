@@ -47,8 +47,8 @@ namespace buzzer_api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Buzzer Api", Version = "v1" });
-                var xmlFile = "buzzer.xml";
-                var xmlPath = Path.Combine("/app", xmlFile);
+                var xmlFile = $"buzzer.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
 
