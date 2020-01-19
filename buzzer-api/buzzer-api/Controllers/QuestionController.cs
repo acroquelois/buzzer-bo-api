@@ -195,7 +195,7 @@ namespace buzzerApi.Controllers
         }
 
         /// <summary>
-        /// Get random question.
+        /// Get random question
         /// </summary>
         /// <returns>Random question</returns>
         [HttpGet]
@@ -214,7 +214,7 @@ namespace buzzerApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Question : Server error at get list question");
+                _logger.LogError("Question : Server error at get random question");
                 return BadRequest(ex);
             }
         }
