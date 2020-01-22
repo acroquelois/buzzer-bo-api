@@ -15,7 +15,7 @@ services:
     restart: always
     container_name: my_dotnet_api
     ports:
-      - '8080:80'
+      - '80:80'
     environment:
       SEQ_URL: 'http://172.16.238.9:5341'
     depends_on:
