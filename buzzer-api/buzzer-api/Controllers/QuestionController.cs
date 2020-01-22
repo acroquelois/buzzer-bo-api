@@ -72,7 +72,9 @@ namespace buzzerApi.Controllers
         /// Get question by id.
         /// </summary>
         /// <param name="id">Id of the question</param>
-        /// <returns>The specified question</returns>
+        /// <response code="200">The question was returned</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Question not found</response>
         [HttpGet("{id}"), Authorize]
         public async Task<ActionResult> GetQuestion(Guid id)
         {
@@ -107,11 +109,10 @@ namespace buzzerApi.Controllers
             try
             {
                 var newQuestion =  _questionService.CreateQuestion(question);
-                // _logger.LogInformation(_logEvent.Value.CreateItem, "{Question} : A new question text was created", _logInformation);
-                // return CreatedAtAction("GetQuestion", new { id = newQuestion.Id}, newQuestion);
-                return Ok(newQuestion);
+                _logger.LogInformation(_logEvent.Value.CreateItem, "{Question} : A new question text was created", _logInformation);
+                return CreatedAtAction("GetQuestion", new { id = newQuestion.Id }, newQuestion);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(_logEvent.Value.CreateItem, "Server error at question text creation", _logInformation);
                 return BadRequest(ex);
@@ -197,7 +198,9 @@ namespace buzzerApi.Controllers
         /// <summary>
         /// Get random question
         /// </summary>
-        /// <returns>Random question</returns>
+        /// <response code="200">A Random question was returned</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Question not found</response>
         [HttpGet]
         public async Task<ActionResult<QuestionDto>> GetRandomQuestion()
         {

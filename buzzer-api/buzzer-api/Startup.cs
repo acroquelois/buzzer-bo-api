@@ -88,8 +88,6 @@ namespace buzzer_api
             {
                 app.UseHsts();
             }
-
-
             app
                 .UseCors("policy")
                 .UseAuthentication()
