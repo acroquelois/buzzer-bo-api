@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace buzzerApi.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,7 +23,7 @@ namespace buzzerApi.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Email = table.Column<string>(nullable: false),
                     Telephone = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: false)
@@ -37,9 +37,8 @@ namespace buzzerApi.Migrations
                 name: "Question",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Interogation = table.Column<string>(nullable: false),
-                    Reponse = table.Column<string>(nullable: false),
                     QuestionTypeId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -54,18 +53,19 @@ namespace buzzerApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Proposition",
+                name: "Propositions",
                 columns: table => new
                 {
-                    Id = table.Column<byte[]>(nullable: false),
-                    QuestionId = table.Column<byte[]>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
+                    QuestionId = table.Column<Guid>(nullable: false),
+                    IsCorrect = table.Column<bool>(nullable: false),
                     proposition = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Proposition", x => x.Id);
+                    table.PrimaryKey("PK_Propositions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Proposition_Question_QuestionId",
+                        name: "FK_Propositions_Question_QuestionId",
                         column: x => x.QuestionId,
                         principalTable: "Question",
                         principalColumn: "Id",
@@ -88,8 +88,8 @@ namespace buzzerApi.Migrations
                 values: new object[] { "IMAGE", "image" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Proposition_QuestionId",
-                table: "Proposition",
+                name: "IX_Propositions_QuestionId",
+                table: "Propositions",
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
@@ -101,7 +101,7 @@ namespace buzzerApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Proposition");
+                name: "Propositions");
 
             migrationBuilder.DropTable(
                 name: "User");

@@ -119,6 +119,29 @@ namespace buzzerApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Update a Question with string proposition.
+        /// </summary>
+        /// <param name="question">Question model</param>
+        /// <returns>The modified Question</returns>
+        /// <response code="200">Returns the modified question</response>
+        /// <response code="400">No files send or no question send</response>
+        [HttpPost, Authorize]
+        public IActionResult UpdateQuestionTexte([FromBody] Question question)
+        {
+            try
+            {
+                var updatedQuestion = _questionService.UpdateQuestion(question);
+                _logger.LogInformation(_logEvent.Value.UpdateItem, "{Question} : The question with id {id} was modified", _logInformation, question.Id);
+                return Ok(question);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(_logEvent.Value.CreateItem, "Server error at question text creation", _logInformation);
+                return BadRequest(ex);
+            }
+        }
+
 
         /// <summary>
         /// Creates a Question with media propositions.

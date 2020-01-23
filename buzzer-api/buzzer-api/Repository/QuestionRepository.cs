@@ -19,7 +19,21 @@ namespace buzzerApi.Repository
 
         public async Task CreateAsync(Question question)
         {
-            db.Question.Add(question);
+            try
+            {
+                db.Question.Add(question);
+                await db.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
+        public async Task UpdateQuestion(Question question)
+        {
+            db.Question.Update(question);
             await db.SaveChangesAsync();
         }
 

@@ -1,7 +1,6 @@
 ﻿using buzzerApi.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
 
 namespace buzzerApi.Repository.Abstraction
@@ -10,6 +9,7 @@ namespace buzzerApi.Repository.Abstraction
 
     {
         Task CreateAsync(Question question);
+        Task UpdateQuestion(Question question);
         Task<Question> GetQuestion(Guid id);
         Task<IEnumerable<Question>> ListAllQuestionTexte();
         Task<bool> DeleteAsync(Guid id);

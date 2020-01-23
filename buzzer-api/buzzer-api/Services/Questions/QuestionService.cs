@@ -25,6 +25,13 @@ namespace buzzerApi.Services
             return question;
         }
 
+        public async Task<Question> UpdateQuestion(Question question)
+        {
+            await _repository.UpdateQuestion(question);
+            return question;
+            
+        }
+
         public async Task<Question> GetQuestionById(Guid id)
         {
             return await _repository.GetQuestion(id);

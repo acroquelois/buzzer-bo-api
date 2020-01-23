@@ -14,17 +14,17 @@ namespace buzzerApi.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("buzzerApi.Models.Propositions", b =>
                 {
-                    b.Property<byte[]>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<byte[]>("QuestionId")
-                        .IsRequired()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<bool>("IsCorrect");
+
+                    b.Property<Guid>("QuestionId");
 
                     b.Property<string>("proposition")
                         .IsRequired();
@@ -33,22 +33,18 @@ namespace buzzerApi.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Proposition");
+                    b.ToTable("Propositions");
                 });
 
             modelBuilder.Entity("buzzerApi.Models.Question", b =>
                 {
-                    b.Property<byte[]>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Interogation")
                         .IsRequired();
 
                     b.Property<string>("QuestionTypeId");
-
-                    b.Property<string>("Reponse")
-                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -89,9 +85,8 @@ namespace buzzerApi.Migrations
 
             modelBuilder.Entity("buzzerApi.Models.User", b =>
                 {
-                    b.Property<byte[]>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasConversion(new ValueConverter<byte[], byte[]>(v => default(byte[]), v => default(byte[]), new ConverterMappingHints(size: 16)));
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Email")
                         .IsRequired();

@@ -1,4 +1,5 @@
 ﻿using buzzerApi.Models;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace buzzerApi.Dto
             {
                 Id = entity.Id,
                 Interogation = entity.Interogation,
-                Reponse = entity.Reponse,
+                Reponse = entity.Propositions.IndexOf(entity.Propositions.First(x => x.IsCorrect)),
                 QuestionType = entity.QuestionType,
                 Propositions = entity.Propositions.Select(x => x.ToDto())
             };
