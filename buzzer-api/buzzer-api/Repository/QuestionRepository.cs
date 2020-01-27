@@ -44,11 +44,32 @@ namespace buzzerApi.Repository
         }
 
 
+        public async Task<IEnumerable<Question>> ListAllQuestion()
+        {
+            return await db.Question
+                .Include(p => p.Propositions)
+                .Include(p => p.QuestionType)
+                .Include(p => p.MediaQuestions)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Question>> ListAllQuestionTexte()
         {
             return await db.Question
                 .Include(p => p.Propositions)
                 .Include(p => p.QuestionType)
+                .Include(p => p.MediaQuestions)
+                .Where(p => p.QuestionTypeId == "TEXTE")
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Question>> ListAllQuestionImage()
+        {
+            return await db.Question
+                .Include(p => p.Propositions)
+                .Include(p => p.QuestionType)
+                .Include(p => p.MediaQuestions)
+                .Where(p => p.QuestionTypeId == "IMAGE")
                 .ToListAsync();
         }
 
@@ -67,30 +88,41 @@ namespace buzzerApi.Repository
             }
         }
 
-        public async Task<Question> GetRandomQuestion()
+        private Question GetRandomQuestion(IEnumerable<Question> questions)
         {
             try
             {
                 List<Question> question_list = new List<Question>();
-                question_list.AddRange(await this.ListAllQuestionTexte());
+                question_list.AddRange(questions);
                 Random rand = new Random();
                 int random_number = rand.Next(0, question_list.Count);
                 Question question = question_list[random_number];
-                //Je définis une variable qui viendra segmenter le jms de ma question
                 List<Guid> guid_list = new List<Guid>();
-                //Je remplis cette liste avec la question récupérée mais ça merde... comment faire ?
                 guid_list.Add(question.Id);
-                //A l'aide de la fonction Find, je récupère l'Id de ma question dans une variable
-                //Guid id_question = list.Find("Id");
-                //On controle que l'id n'est pas présent dans la liste de question déjà envoyée
-                //...
-                //Si non, on met l'id dans la liste et on retourne la question
-                //...
-                //Si oui, on boucle sur les autre questions jusqu'à en trouvé une bonne
-                //...
-                //S'il n'y a plus de question on sort de la boucle et envoi un jms de fin, on ne retourne pas de question
-                //...
                 return question;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<Question> GetRandomQuestionTexte()
+        {
+            try
+            {
+                return this.GetRandomQuestion(await this.ListAllQuestionTexte());
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<Question> GetRandomQuestionImage()
+        {
+            try
+            {
+                return this.GetRandomQuestion(await this.ListAllQuestionImage());
             }
             catch (Exception ex)
             {

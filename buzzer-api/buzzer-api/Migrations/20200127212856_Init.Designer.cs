@@ -9,7 +9,7 @@ using buzzerApi.Models;
 namespace buzzerApi.Migrations
 {
     [DbContext(typeof(BuzzerApiContext))]
-    [Migration("20200123002047_Init")]
+    [Migration("20200127212856_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,6 +18,25 @@ namespace buzzerApi.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("buzzerApi.Models.MediaQuestion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("MediaType");
+
+                    b.Property<Guid>("QuestionId");
+
+                    b.Property<string>("Url")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("MediaQuestion");
+                });
 
             modelBuilder.Entity("buzzerApi.Models.Propositions", b =>
                 {
@@ -102,6 +121,14 @@ namespace buzzerApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("buzzerApi.Models.MediaQuestion", b =>
+                {
+                    b.HasOne("buzzerApi.Models.Question", "Question")
+                        .WithMany("MediaQuestions")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("buzzerApi.Models.Propositions", b =>

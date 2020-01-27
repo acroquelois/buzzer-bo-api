@@ -12,5 +12,7 @@ namespace buzzerApi.Options
         public UploadOptions Upload { get; set; }
 
         public LogEventOptions LogEvent { get; set; }
+
+        public ConnectionOptions Url { get; set; }
     }
 }

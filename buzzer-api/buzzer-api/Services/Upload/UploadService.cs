@@ -14,18 +14,21 @@ namespace buzzerApi.Services.Upload
 {
     public class UploadService : IUploadService
     {
-        public async Task<ICollection<String>> UploadMedia(IOptions<UploadOptions> uploadOptions, MediaType key, IFormFileCollection files)
+        public async Task<ICollection<String>> UploadMedia(IOptions<UploadOptions> uploadOptions, IOptions<ConnectionOptions> connexionOptions, MediaType key, IFormFileCollection files)
         {
             var options = uploadOptions.Value;
             string directoryPath = null;
+            string keyUrl = null;
             ICollection<string> allowedExtensions = new List<string>();
             if (key == MediaType.Image)
             {
+                keyUrl = "image";
                 directoryPath = options.MediaImage;
                 allowedExtensions = options.ExtensionsImage.Split(',');
             }
             else if (key == MediaType.Audio)
             {
+                keyUrl = "audio";
                 directoryPath = options.MediaAudio;
                 allowedExtensions = options.ExtensionsAudio.Split(',');
             }
@@ -38,6 +41,7 @@ namespace buzzerApi.Services.Upload
                 foreach (var file in files)
                 {
                     string filePath = null;
+                    string url = null;
                     var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
                     string filename = $"{Guid.NewGuid()}_{file.FileName.Replace(" ", "-")}";
                     if (allowedExtensions.Any(x => x == fileExt))
@@ -50,7 +54,8 @@ namespace buzzerApi.Services.Upload
                             {
                                 await file.CopyToAsync(fileStream);
                             }
-                            filenames.Add(filePath);
+                            url = $"{connexionOptions.Value.Api}/{keyUrl}/{filename}";
+                            filenames.Add(url);
                         }
                         else
                         {

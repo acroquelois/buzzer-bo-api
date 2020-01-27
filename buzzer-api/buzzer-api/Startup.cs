@@ -11,6 +11,7 @@ using System;
 using System.IO;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Reflection;
+using buzzerApi.Middlewares;
 
 namespace buzzer_api
 {
@@ -91,6 +92,7 @@ namespace buzzer_api
             app
                 .UseCors("policy")
                 .UseAuthentication()
+                .UseCustomFileImageService("/image")
                 .UseSession() 
                 .UseMvc()
                 .UseSwagger()

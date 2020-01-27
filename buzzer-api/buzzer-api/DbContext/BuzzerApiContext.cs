@@ -15,6 +15,8 @@ namespace buzzerApi.Models
 
         public DbSet<Models.QuestionType> QuestionType { get; set; }
 
+        public DbSet<Models.MediaQuestion> MediaQuestion { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<QuestionType>().HasData(

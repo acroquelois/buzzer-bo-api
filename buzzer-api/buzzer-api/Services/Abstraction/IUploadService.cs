@@ -11,6 +11,6 @@ namespace buzzerApi.Services.Abstraction
 {
     public interface IUploadService
     {
-        Task<ICollection<String>> UploadMedia(IOptions<UploadOptions> uploadOptions, MediaType key, IFormFileCollection files);
+        Task<ICollection<String>> UploadMedia(IOptions<UploadOptions> uploadOptions, IOptions<ConnectionOptions> connexionOptions, MediaType key, IFormFileCollection files);
     }
 }

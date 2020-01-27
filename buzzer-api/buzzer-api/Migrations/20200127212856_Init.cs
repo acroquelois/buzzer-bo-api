@@ -53,6 +53,26 @@ namespace buzzerApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MediaQuestion",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Url = table.Column<string>(nullable: false),
+                    QuestionId = table.Column<Guid>(nullable: false),
+                    MediaType = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MediaQuestion", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MediaQuestion_Question_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Question",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Propositions",
                 columns: table => new
                 {
@@ -88,6 +108,11 @@ namespace buzzerApi.Migrations
                 values: new object[] { "IMAGE", "image" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_MediaQuestion_QuestionId",
+                table: "MediaQuestion",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Propositions_QuestionId",
                 table: "Propositions",
                 column: "QuestionId");
@@ -100,6 +125,9 @@ namespace buzzerApi.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "MediaQuestion");
+
             migrationBuilder.DropTable(
                 name: "Propositions");
 

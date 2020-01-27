@@ -38,7 +38,7 @@ namespace buzzerApi.Services
         }
         public async Task<IEnumerable<Question>> GetListAllQuestion()
         {
-            return await _repository.ListAllQuestionTexte();
+            return await _repository.ListAllQuestion();
         }
 
         public async Task<bool> DeleteQuestion(Guid id)
@@ -46,10 +46,16 @@ namespace buzzerApi.Services
             return await _repository.DeleteAsync(id);
         }
 
-        public async Task<QuestionDto> GetRandomQuestion()
+        public async Task<QuestionTexteDto> GetRandomQuestionTexte()
         {
-            var question = await _repository.GetRandomQuestion();
-            return question.ToDto();
+            var question = await _repository.GetRandomQuestionTexte();
+            return QuestionTexteExtensions.ToDto(question);
+        }
+
+        public async Task<QuestionImageDto> GetRandomQuestionImage()
+        {
+            var question = await _repository.GetRandomQuestionImage();
+            return QuestionImageExtensions.ToDto(question);
         }
     }
 }

@@ -21,10 +21,11 @@ namespace buzzerApi.Controllers
     public class QuestionController : ControllerBase
     {
 
-        public QuestionController(IQuestionService questionService, IOptions<UploadOptions> uploadOptions, IUploadService uploadService, ILogger<QuestionController> logger, IOptions<LogEventOptions> logEvent)
+        public QuestionController(IQuestionService questionService, IOptions<UploadOptions> uploadOptions, IOptions<ConnectionOptions> connexionOptions, IUploadService uploadService, ILogger<QuestionController> logger, IOptions<LogEventOptions> logEvent)
         {
             _questionService = questionService;
             _uploadOptions = uploadOptions;
+            _connexionOptions = connexionOptions;
             _uploadService = uploadService;
             _logger = logger;
             _logEvent = logEvent;
@@ -33,6 +34,7 @@ namespace buzzerApi.Controllers
 
         private readonly IQuestionService _questionService;
         private readonly IOptions<UploadOptions> _uploadOptions;
+        private readonly IOptions<ConnectionOptions> _connexionOptions;
         private readonly IUploadService _uploadService;
         private readonly ILogger<QuestionController> _logger;
         private readonly IOptions<LogEventOptions> _logEvent;
@@ -47,11 +49,12 @@ namespace buzzerApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="404">Question not found</response>
         [HttpGet, Authorize]
-        public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
+        public async Task<ActionResult<IEnumerable<QuestionDto>>> GetQuestions()
         {
             try
             {
-                var questions = await _questionService.GetListAllQuestion();
+                var entities = await _questionService.GetListAllQuestion();
+                var questions = entities.Select(x => QuestionExtensions.ToDto(x));
                 if (questions == null)
                 {
                     _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);
@@ -147,12 +150,12 @@ namespace buzzerApi.Controllers
         /// Creates a Question with media propositions.
         /// </summary>
         /// <param name="request">Form-data of the request with files and data</param>
-        /// <param name="media">Media type[Audio;Image]</param>
+        /// <param name="mediaType">Media type[Audio;Image]</param>
         /// <returns>A newly created Question</returns>
         /// <response code="201">Returns the newly created question</response>
         /// <response code="400">No files send or no question send</response>
         [HttpPost("{media}"), Authorize]
-        public async Task<IActionResult> PostQuestionMedia(IFormCollection request, MediaType media)
+        public async Task<IActionResult> PostQuestionMedia(IFormCollection request, Enum.MediaType mediaType)
 
         {
             try
@@ -168,17 +171,19 @@ namespace buzzerApi.Controllers
                     return BadRequest("No file sended");
                 }
                 var files = request.Files;
-                var pathFiles = await _uploadService.UploadMedia(_uploadOptions, media, files);
+                var pathFiles = await _uploadService.UploadMedia(_uploadOptions, _connexionOptions, mediaType, files);
                 var key = request.Keys.FirstOrDefault(x => x == "question");
                 Question question = JsonConvert.DeserializeObject<Question>(request[key]);
-                ICollection<Propositions> propositions = new List<Propositions>();
+                ICollection<MediaQuestion> medias = new List<MediaQuestion>();
                 foreach (var path in pathFiles)
                 {
-                    var proposition = new Propositions();
-                    proposition.proposition = path;
-                    propositions.Add(proposition);
+                    var media = new MediaQuestion();
+                    media.Url = path;
+                    media.MediaType = mediaType;
+                    medias.Add(media);
                 }
-                question.Propositions = propositions;
+                question.MediaQuestions = medias;
+                question.Propositions = question.Propositions;
                 var newQuestion = _questionService.CreateQuestion(question);
                 _logger.LogInformation(_logEvent.Value.CreateItem, "A new question media was created", _logInformation);
                 return CreatedAtAction("GetQuestion", new { id = newQuestion.Id }, newQuestion);
@@ -219,17 +224,44 @@ namespace buzzerApi.Controllers
         }
 
         /// <summary>
-        /// Get random question
+        /// Get random question texte
         /// </summary>
-        /// <response code="200">A Random question was returned</response>
+        /// <response code="200">A Random question texte was returned</response>
         /// <response code="400">Bad request</response>
         /// <response code="404">Question not found</response>
         [HttpGet]
-        public async Task<ActionResult<QuestionDto>> GetRandomQuestion()
+        public async Task<ActionResult<QuestionTexteDto>> GetRandomQuestionTexte()
         {
             try
             {
-                var question = await _questionService.GetRandomQuestion();
+                var question = await _questionService.GetRandomQuestionTexte();
+                if (question == null)
+                {
+                    _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);
+                    return NotFound("There is no question");
+                }
+                _logger.LogInformation(_logEvent.Value.GetItem, "{Question} : List of all questions returned", _logInformation);
+                return Ok(question);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Question : Server error at get random question");
+                return BadRequest(ex);
+            }
+        }
+
+        /// <summary>
+        /// Get random question image
+        /// </summary>
+        /// <response code="200">A Random question image was returned</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Question not found</response>
+        [HttpGet]
+        public async Task<ActionResult<QuestionImageDto>> GetRandomQuestionImage()
+        {
+            try
+            {
+                var question = await _questionService.GetRandomQuestionImage();
                 if (question == null)
                 {
                     _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);

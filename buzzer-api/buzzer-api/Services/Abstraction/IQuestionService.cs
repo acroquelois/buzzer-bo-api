@@ -18,6 +18,7 @@ namespace buzzerApi.Services.Abstraction
 
         Task<bool> DeleteQuestion(Guid id);
 
-        Task<QuestionDto> GetRandomQuestion();
+        Task<QuestionTexteDto> GetRandomQuestionTexte();
+        Task<QuestionImageDto> GetRandomQuestionImage();
     }
 }

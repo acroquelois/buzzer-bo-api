@@ -1,5 +1,4 @@
 ﻿using buzzerApi.Models;
-using buzzerApi.Dto;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
@@ -8,28 +7,28 @@ using System.Threading.Tasks;
 
 namespace buzzerApi.Dto
 {
-    public class QuestionDto
+    public class QuestionTexteDto
     {
         public Guid Id { get; set; }
         public string Interogation { get; set; }
-        public string Reponse { get; set; }
+        public int Reponse { get; set; }
         public QuestionType QuestionType { get; set; }
-        public IEnumerable<MediaQuestionDto> MediaQuestion { get; set; }
-        public IEnumerable<PropositionDto> Propositions { get; set; }
+        public MediaQuestion Media { get; set; }
+        public virtual IEnumerable<PropositionDto> Propositions { get; set; }
     }
 
-    public static class QuestionExtensions
+    public static class QuestionTexteExtensions
     {
-        public static QuestionDto ToDto(this Models.Question entity)
+        public static QuestionTexteDto ToDto(this Models.Question entity)
         {
-            return new QuestionDto
+            return new QuestionTexteDto
             {
                 Id = entity.Id,
                 Interogation = entity.Interogation,
-                Reponse = entity.Propositions.Count == 0 ? null : entity.Propositions.First(x => x.IsCorrect).proposition,
+                Reponse = entity.Propositions.IndexOf(entity.Propositions.First(x => x.IsCorrect)),
                 QuestionType = entity.QuestionType,
                 Propositions = entity.Propositions.Select(x => x.ToDto()),
-                MediaQuestion = entity.MediaQuestions.Select(x => x.ToDto())
+                Media = (entity.Propositions.Count == 0 || entity.Propositions == null) ? null : entity.MediaQuestions.First()
             };
         }
     }
