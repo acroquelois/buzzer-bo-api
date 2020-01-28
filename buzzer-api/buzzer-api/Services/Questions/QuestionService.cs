@@ -32,9 +32,10 @@ namespace buzzerApi.Services
             
         }
 
-        public async Task<Question> GetQuestionById(Guid id)
+        public async Task<QuestionDto> GetQuestionById(Guid id)
         {
-            return await _repository.GetQuestion(id);
+            var entity = await _repository.GetQuestion(id);
+            return QuestionExtensions.ToDto(entity);
         }
         public async Task<IEnumerable<Question>> GetListAllQuestion()
         {
@@ -55,6 +56,11 @@ namespace buzzerApi.Services
         public async Task<QuestionImageDto> GetRandomQuestionImage()
         {
             var question = await _repository.GetRandomQuestionImage();
+            return QuestionImageExtensions.ToDto(question);
+        }
+        public async Task<QuestionImageDto> GetRandomQuestionAudio()
+        {
+            var question = await _repository.GetRandomQuestionAudio();
             return QuestionImageExtensions.ToDto(question);
         }
     }

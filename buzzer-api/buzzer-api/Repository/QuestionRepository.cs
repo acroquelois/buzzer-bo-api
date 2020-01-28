@@ -73,6 +73,16 @@ namespace buzzerApi.Repository
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Question>> ListAllQuestionAudio()
+        {
+            return await db.Question
+                .Include(p => p.Propositions)
+                .Include(p => p.QuestionType)
+                .Include(p => p.MediaQuestions)
+                .Where(p => p.QuestionTypeId == "AUDIO")
+                .ToListAsync();
+        }
+
         public async Task<bool> DeleteAsync(Guid id)
         {
             try
@@ -123,6 +133,18 @@ namespace buzzerApi.Repository
             try
             {
                 return this.GetRandomQuestion(await this.ListAllQuestionImage());
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<Question> GetRandomQuestionAudio()
+        {
+            try
+            {
+                return this.GetRandomQuestion(await this.ListAllQuestionAudio());
             }
             catch (Exception ex)
             {

@@ -79,7 +79,7 @@ namespace buzzerApi.Controllers
         /// <response code="400">Bad request</response>
         /// <response code="404">Question not found</response>
         [HttpGet("{id}"), Authorize]
-        public async Task<ActionResult> GetQuestion(Guid id)
+        public async Task<ActionResult<QuestionDto>> GetQuestion(Guid id)
         {
             try
             {
@@ -262,6 +262,33 @@ namespace buzzerApi.Controllers
             try
             {
                 var question = await _questionService.GetRandomQuestionImage();
+                if (question == null)
+                {
+                    _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);
+                    return NotFound("There is no question");
+                }
+                _logger.LogInformation(_logEvent.Value.GetItem, "{Question} : List of all questions returned", _logInformation);
+                return Ok(question);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Question : Server error at get random question");
+                return BadRequest(ex);
+            }
+        }
+
+        /// <summary>
+        /// Get random question audio
+        /// </summary>
+        /// <response code="200">A Random question audio was returned</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Question not found</response>
+        [HttpGet]
+        public async Task<ActionResult<QuestionImageDto>> GetRandomQuestionAudio()
+        {
+            try
+            {
+                var question = await _questionService.GetRandomQuestionAudio();
                 if (question == null)
                 {
                     _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);

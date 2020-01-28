@@ -4,19 +4,17 @@ services:
     image: mysql/mysql-server:5.7
     container_name: my_mysql
     environment:
-      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_HOST: 172.16.238.10 
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     volumes:
       - db-data:/var/lib/mysql
     networks:
       - buzzer
-    ports:
-    - '3306:3306'
   netapi:
     build: .
     container_name: my_dotnet_api
     ports:
-      - '8080:80'
+      - '80:80'
     environment:
       SEQ_URL: 'http://172.16.238.9:5341'
     depends_on:
@@ -35,7 +33,7 @@ services:
     links:
       - netapi:api
     environment:
-      - URL=http://40.113.102.211:80/swagger/v1/swagger.json
+      - URL=http://buzzer1.westeurope.cloudapp.azure.com/swagger/v1/swagger.json
     networks:
       - buzzer
   seq:
