@@ -39,7 +39,11 @@ namespace buzzerApi.Repository
 
         public async Task<Question> GetQuestion(Guid id)
         {
-            var question = await db.Question.FirstOrDefaultAsync(p => p.Id == id);
+            var question = await db.Question
+                .Include(p => p.Propositions)
+                .Include(p => p.QuestionType)
+                .Include(p => p.MediaQuestions)
+                .FirstOrDefaultAsync(p => p.Id == id);
             return question;
         }
 
@@ -95,60 +99,6 @@ namespace buzzerApi.Repository
             catch (Exception ex)
             {
                 return false;
-            }
-        }
-
-        private Question GetRandomQuestion(IEnumerable<Question> questions)
-        {
-            try
-            {
-                List<Question> question_list = new List<Question>();
-                question_list.AddRange(questions);
-                Random rand = new Random();
-                int random_number = rand.Next(0, question_list.Count);
-                Question question = question_list[random_number];
-                List<Guid> guid_list = new List<Guid>();
-                guid_list.Add(question.Id);
-                return question;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public async Task<Question> GetRandomQuestionTexte()
-        {
-            try
-            {
-                return this.GetRandomQuestion(await this.ListAllQuestionTexte());
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public async Task<Question> GetRandomQuestionImage()
-        {
-            try
-            {
-                return this.GetRandomQuestion(await this.ListAllQuestionImage());
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public async Task<Question> GetRandomQuestionAudio()
-        {
-            try
-            {
-                return this.GetRandomQuestion(await this.ListAllQuestionAudio());
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
         }
 

@@ -17,7 +17,7 @@ namespace buzzerApi.Dto
         public virtual IEnumerable<PropositionDto> Propositions { get; set; }
     }
 
-    public static class QuestionTexteExtensions
+    public static class QuestionTexteDtoExtensions
     {
         public static QuestionTexteDto ToDto(this Models.Question entity)
         {
@@ -27,7 +27,7 @@ namespace buzzerApi.Dto
                 Interogation = entity.Interogation,
                 Reponse = entity.Propositions.IndexOf(entity.Propositions.First(x => x.IsCorrect)),
                 QuestionType = entity.QuestionType,
-                Propositions = entity.Propositions.Select(x => x.ToDto()),
+                Propositions = entity.Propositions.Select(x => PropositionDtoExtensions.ToDto(x)),
                 Media = (entity.MediaQuestions.Count == 0) ? null : entity.MediaQuestions.First()
             };
         }

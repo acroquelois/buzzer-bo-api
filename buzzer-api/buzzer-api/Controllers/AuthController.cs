@@ -32,13 +32,13 @@ namespace buzzerApi.Controllers
             try
             {
                 var (authError,token) = await authService.LoginAsync(new Models.User { Email = user.Email, Password = user.Password });
-                if (authError == AuthErrors.EmptyUsername)
+                if (authError == EnumAuthErrors.EmptyUsername)
                 {
                     logger.LogWarning("Connexion attempt failed by empty user");
                     return Unauthorized(new { Message = "Utilisateur ou mot de passe incorrect." });
                 }
 
-                if (authError == AuthErrors.Forbidden)
+                if (authError == EnumAuthErrors.Forbidden)
                 {
                     logger.LogInformation("Connexion attempt failed by {User}", user.Email);
                     return Unauthorized(new { Message = "Utilisateur ou mot de passe incorrect." });

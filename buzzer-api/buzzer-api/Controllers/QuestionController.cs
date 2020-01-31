@@ -16,7 +16,7 @@ using Newtonsoft.Json;
 
 namespace buzzerApi.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]/[action]/")]
     [ApiController]
     public class QuestionController : ControllerBase
     {
@@ -42,19 +42,18 @@ namespace buzzerApi.Controllers
 
 
         /// <summary>
-        /// Return a random question.
+        /// Return a list of all questions.
         /// </summary>
-        /// <returns>A random question</returns>
-        /// <response code="200">Returns the question</response>
+        /// <returns>List of questions</returns>
+        /// <response code="200">Returns a list of questions</response>
         /// <response code="400">Bad request</response>
         /// <response code="404">Question not found</response>
         [HttpGet, Authorize]
-        public async Task<ActionResult<IEnumerable<QuestionDto>>> GetQuestions()
+        public async Task<ActionResult<IEnumerable<QuestionDto>>> GetListQuestions()
         {
             try
             {
-                var entities = await _questionService.GetListAllQuestion();
-                var questions = entities.Select(x => QuestionExtensions.ToDto(x));
+                var questions = await _questionService.GetListAllQuestion();
                 if (questions == null)
                 {
                     _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);
@@ -100,25 +99,80 @@ namespace buzzerApi.Controllers
         }
 
         /// <summary>
-        /// Creates a Question with string proposition.
+        /// Get question of type texte by id.
         /// </summary>
-        /// <param name="question">Question model</param>
-        /// <returns>A newly created Question</returns>
-        /// <response code="201">Returns the newly created question</response>
-        /// <response code="400">No files send or no question send</response>
-        [HttpPost, Authorize]
-        public IActionResult PostQuestionTexte([FromBody] Question question)            
+        /// <param name="id">Id of the question</param>
+        /// <response code="200">The question was returned</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Question not found</response>
+        [HttpGet("{id}"), Authorize]
+        public async Task<ActionResult<QuestionTexteDtoBO>> GetQuestionTexte(Guid id)
         {
             try
             {
-                var newQuestion =  _questionService.CreateQuestion(question);
-                _logger.LogInformation(_logEvent.Value.CreateItem, "{Question} : A new question text was created", _logInformation);
+                var question = await _questionService.GetQuestionTexteById(id);
+                if (question == null)
+                {
+                    _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);
+                    return NotFound("There is no question");
+                }
+                _logger.LogInformation(_logEvent.Value.GetItem, "{Question} : List of all questions returned", _logInformation);
+                return Ok(question);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Question : Server error at get list question");
+                return BadRequest(ex);
+            }
+        }
+
+        /// <summary>
+        /// Creates a question.
+        /// </summary>
+        /// <param name="request">form-data input</param>
+        /// <param name="questionType">type of the question: [TEXTE,AUDIO,IMAGE]</param>
+        /// <returns>A newly created Question</returns>
+        /// <response code="201">Returns the newly created question</response>
+        /// <response code="400">No files send or no question send</response>
+        [HttpPost("{questionType}"), Authorize]
+        public async Task<IActionResult> PostQuestion(IFormCollection request, EnumQuestionType questionType)
+        {
+            try
+            {
+                if (!request.ContainsKey("question"))
+                {
+                    _logger.LogWarning(_logEvent.Value.CreateItem, $"Question : A new question of type {questionType.ToString()} was created", _logInformation);
+                    return BadRequest("No question sended");
+                }
+                if (request.Files.Count == 0)
+                {
+                    _logger.LogWarning(_logEvent.Value.CreateItem, "{Question}: No file sended", _logInformation);
+                    return BadRequest("No file sended");
+                }
+                IFormFileCollection files = request.Files;
+                string key = request.Keys.FirstOrDefault(x => x == "question");
+                Question question = null;
+                switch (questionType)
+                {
+                    case EnumQuestionType.TEXTE:
+                        question = JsonConvert.DeserializeObject<QuestionTexteDtoBO>(request[key]).ToEntity();
+                        break;
+                    case EnumQuestionType.IMAGE:
+                        question = JsonConvert.DeserializeObject<QuestionImageDtoBO>(request[key]).ToEntity();
+                        break;
+                    case EnumQuestionType.AUDIO:
+                        break;
+                    default:
+                        return BadRequest("Type de question inconnu");
+                }
+                Question newQuestion = await _questionService.CreateQuestion(question, files, EnumMediaType.Image);
+                _logger.LogInformation(_logEvent.Value.CreateItem, $"A new question of type {questionType.ToString()} was created", _logInformation);
                 return CreatedAtAction("GetQuestion", new { id = newQuestion.Id }, newQuestion);
             }
             catch (Exception ex)
             {
-                _logger.LogError(_logEvent.Value.CreateItem, "Server error at question text creation", _logInformation);
-                return BadRequest(ex);
+                _logger.LogError(_logEvent.Value.CreateItem, $"Server error at question media creation{ex.ToString()}", _logInformation);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -141,56 +195,6 @@ namespace buzzerApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(_logEvent.Value.CreateItem, "Server error at question text creation", _logInformation);
-                return BadRequest(ex);
-            }
-        }
-
-
-        /// <summary>
-        /// Creates a Question with media propositions.
-        /// </summary>
-        /// <param name="request">Form-data of the request with files and data</param>
-        /// <param name="mediaType">Media type[Audio;Image]</param>
-        /// <returns>A newly created Question</returns>
-        /// <response code="201">Returns the newly created question</response>
-        /// <response code="400">No files send or no question send</response>
-        [HttpPost("{media}"), Authorize]
-        public async Task<IActionResult> PostQuestionMedia(IFormCollection request, Enum.MediaType mediaType)
-
-        {
-            try
-            {
-                if(!request.ContainsKey("question"))
-                {
-                    _logger.LogWarning(_logEvent.Value.CreateItem, "{Question} : A new question media was created", _logInformation);
-                    return BadRequest("No question sended");
-                }
-                if (request.Files.Count == 0)
-                {
-                    _logger.LogWarning(_logEvent.Value.CreateItem, "{Question}: No file sended", _logInformation);
-                    return BadRequest("No file sended");
-                }
-                var files = request.Files;
-                var pathFiles = await _uploadService.UploadMedia(_uploadOptions, _connexionOptions, mediaType, files);
-                var key = request.Keys.FirstOrDefault(x => x == "question");
-                Question question = JsonConvert.DeserializeObject<Question>(request[key]);
-                ICollection<MediaQuestion> medias = new List<MediaQuestion>();
-                foreach (var path in pathFiles)
-                {
-                    var media = new MediaQuestion();
-                    media.Url = path;
-                    media.MediaType = mediaType;
-                    medias.Add(media);
-                }
-                question.MediaQuestions = medias;
-                question.Propositions = question.Propositions;
-                var newQuestion = _questionService.CreateQuestion(question);
-                _logger.LogInformation(_logEvent.Value.CreateItem, "A new question media was created", _logInformation);
-                return CreatedAtAction("GetQuestion", new { id = newQuestion.Id }, newQuestion);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(_logEvent.Value.CreateItem, "Server error at question media creation", _logInformation);
                 return BadRequest(ex);
             }
         }
@@ -283,26 +287,26 @@ namespace buzzerApi.Controllers
         /// <response code="200">A Random question audio was returned</response>
         /// <response code="400">Bad request</response>
         /// <response code="404">Question not found</response>
-        [HttpGet]
-        public async Task<ActionResult<QuestionImageDto>> GetRandomQuestionAudio()
-        {
-            try
-            {
-                var question = await _questionService.GetRandomQuestionAudio();
-                if (question == null)
-                {
-                    _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);
-                    return NotFound("There is no question");
-                }
-                _logger.LogInformation(_logEvent.Value.GetItem, "{Question} : List of all questions returned", _logInformation);
-                return Ok(question);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Question : Server error at get random question");
-                return BadRequest(ex);
-            }
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<QuestionImageDto>> GetRandomQuestionAudio()
+        //{
+        //    try
+        //    {
+        //        var question = await _questionService.GetRandomQuestionAudio();
+        //        if (question == null)
+        //        {
+        //            _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);
+        //            return NotFound("There is no question");
+        //        }
+        //        _logger.LogInformation(_logEvent.Value.GetItem, "{Question} : List of all questions returned", _logInformation);
+        //        return Ok(question);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError("Question : Server error at get random question");
+        //        return BadRequest(ex);
+        //    }
+        //}
 
     }
 }

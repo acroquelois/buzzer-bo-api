@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using buzzerApi.Enum;
+using Microsoft.EntityFrameworkCore;
 
 namespace buzzerApi.Models
 {
@@ -20,9 +21,9 @@ namespace buzzerApi.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<QuestionType>().HasData(
-                new QuestionType { Id="TEXTE", Type="texte"},
-                new QuestionType { Id = "AUDIO", Type = "audio" },
-                new QuestionType { Id = "IMAGE", Type = "image" }
+                new QuestionType { Id = EnumQuestionType.TEXTE.ToString(), Type = "texte"},
+                new QuestionType { Id = EnumQuestionType.AUDIO.ToString(), Type = "audio" },
+                new QuestionType { Id = EnumQuestionType.IMAGE.ToString(), Type = "image" }
                 );
         }
     }

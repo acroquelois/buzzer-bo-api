@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace buzzerApi.Enum
 {
-    public enum MediaType
+    public enum EnumQuestionType
     {
-        Image,
-        Audio
+        TEXTE,
+        IMAGE,
+        AUDIO
     }
 }

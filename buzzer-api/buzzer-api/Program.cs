@@ -15,7 +15,7 @@ namespace buzzer_api
             .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
             .Enrich.FromLogContext()
             .WriteTo.Console()
-            .WriteTo.Seq(seq)
+            //.WriteTo.Seq(seq)
             .CreateLogger();
         
             try

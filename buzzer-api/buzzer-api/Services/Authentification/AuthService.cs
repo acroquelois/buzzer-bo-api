@@ -29,15 +29,15 @@ namespace buzzerApi.Services.Authentification
         private readonly IConfiguration _configuration;
         private readonly IOptions<AuthOptions> _authOptions;
 
-        public async Task<(AuthErrors, UserToken)> LoginAsync(Models.User userAuth)
+        public async Task<(EnumAuthErrors, UserToken)> LoginAsync(Models.User userAuth)
         {
             if (userAuth == null)
             {
-                return (AuthErrors.EmptyUsername, null);
+                return (EnumAuthErrors.EmptyUsername, null);
             }
             if (string.IsNullOrEmpty(userAuth.Email))
             {
-                return (AuthErrors.EmptyUsername, null);
+                return (EnumAuthErrors.EmptyUsername, null);
             }
             try
             {
@@ -46,16 +46,16 @@ namespace buzzerApi.Services.Authentification
 
                 if (result == PasswordVerificationResult.Failed)
                 {
-                    return (AuthErrors.Forbidden, null);
+                    return (EnumAuthErrors.Forbidden, null);
                 }
 
                 UserToken accessToken = this.GenerateToken(user);
 
-                return (AuthErrors.None, accessToken);
+                return (EnumAuthErrors.None, accessToken);
             }
             catch
             {
-                return (AuthErrors.Forbidden, null);
+                return (EnumAuthErrors.Forbidden, null);
             }
         }
 

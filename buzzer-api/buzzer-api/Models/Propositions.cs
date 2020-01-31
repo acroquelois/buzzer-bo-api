@@ -15,6 +15,6 @@ namespace buzzerApi.Models
         [DefaultValue("false")]
         public bool IsCorrect { get; set; }
         [Required]
-        public string proposition { get; set; } 
+        public string Proposition { get; set; } 
     }
 }

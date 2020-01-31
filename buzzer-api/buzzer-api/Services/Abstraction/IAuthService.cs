@@ -8,7 +8,7 @@ namespace buzzerApi.Services.Abstraction
 {
     public interface IAuthService
     {
-        Task<(AuthErrors, UserToken)> LoginAsync(Models.User user);
+        Task<(EnumAuthErrors, UserToken)> LoginAsync(Models.User user);
         bool IsTokenValid(string token);
         UserToken GenerateToken(Models.User user);
     }

@@ -11,14 +11,14 @@ namespace buzzerApi.Dto
         public string proposition { get; set; }
     }
 
-    public static class PropositionExtensions
+    public static class PropositionDtoExtensions
     {
         public static PropositionDto ToDto(this Models.Propositions entity)
         {
             return new PropositionDto
             {
                 Id = entity.Id,
-                proposition = entity.proposition
+                proposition = entity.Proposition
             };
         }
     }

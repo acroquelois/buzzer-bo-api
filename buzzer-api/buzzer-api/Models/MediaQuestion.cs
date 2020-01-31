@@ -17,6 +17,6 @@ namespace buzzerApi.Models
         public Question Question { get; set; }
         public Guid QuestionId { get; set; }
         [Required]
-        public Enum.MediaType MediaType { get; set; }
+        public Enum.EnumMediaType MediaType { get; set; }
     }
 }

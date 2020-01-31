@@ -14,19 +14,19 @@ namespace buzzerApi.Services.Upload
 {
     public class UploadService : IUploadService
     {
-        public async Task<ICollection<String>> UploadMedia(IOptions<UploadOptions> uploadOptions, IOptions<ConnectionOptions> connexionOptions, MediaType key, IFormFileCollection files)
+        public async Task<ICollection<String>> UploadMedia(IOptions<UploadOptions> uploadOptions, IOptions<ConnectionOptions> connexionOptions, EnumMediaType key, IFormFileCollection files)
         {
             var options = uploadOptions.Value;
             string directoryPath = null;
             string keyUrl = null;
             ICollection<string> allowedExtensions = new List<string>();
-            if (key == MediaType.Image)
+            if (key == EnumMediaType.Image)
             {
                 keyUrl = "image";
                 directoryPath = options.MediaImage;
                 allowedExtensions = options.ExtensionsImage.Split(',');
             }
-            else if (key == MediaType.Audio)
+            else if (key == EnumMediaType.Audio)
             {
                 keyUrl = "audio";
                 directoryPath = options.MediaAudio;

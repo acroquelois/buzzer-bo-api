@@ -15,8 +15,5 @@ namespace buzzerApi.Repository.Abstraction
         Task<IEnumerable<Question>> ListAllQuestionTexte();
         Task<IEnumerable<Question>> ListAllQuestionImage(); 
         Task<bool> DeleteAsync(Guid id);
-        Task<Question> GetRandomQuestionTexte();
-        Task<Question> GetRandomQuestionImage(); 
-        Task<Question> GetRandomQuestionAudio();
     }
 }

@@ -10,10 +10,10 @@ namespace buzzerApi.Dto
         public Guid Id { get; set; }
         public string Url { get; set; }
         public Guid QuestionId { get; set; }
-        public Enum.MediaType MediaType { get; set; }
+        public Enum.EnumMediaType MediaType { get; set; }
     }
 
-    public static class MediaQuestionExtensions
+    public static class MediaQuestionDtoExtensions
     {
         public static MediaQuestionDto ToDto(this Models.MediaQuestion entity)
         {

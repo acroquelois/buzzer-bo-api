@@ -1,6 +1,6 @@
 ﻿namespace buzzerApi.Enum
 {
-    public enum AuthErrors
+    public enum EnumAuthErrors
     {
         EmptyUsername,
         Forbidden,

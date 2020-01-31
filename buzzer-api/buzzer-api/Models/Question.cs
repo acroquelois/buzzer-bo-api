@@ -14,8 +14,8 @@ namespace buzzerApi.Models
         [ForeignKey("QuestionTypeId")]
         public QuestionType QuestionType { get; set; }
         public string QuestionTypeId { get; set; }
-        public virtual ICollection<MediaQuestion> MediaQuestions { get; set; }
+        public virtual ICollection<MediaQuestion> MediaQuestions { get; set; } = new List<MediaQuestion>();
         [Required]
-        public virtual ICollection<Propositions> Propositions { get; set; }
+        public virtual ICollection<Propositions> Propositions { get; set; } = new List<Propositions>();
     }
 }
