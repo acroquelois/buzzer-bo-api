@@ -12,19 +12,15 @@ namespace buzzerApi.Services.Abstraction
     {
 
         Task<Question> CreateQuestion(Question question, IFormFileCollection files, EnumMediaType mediaType);
-
-        Task<Question> UpdateQuestion(Question question);
-
+        Task<Question> UpdateQuestion(Question question, IFormFileCollection files, EnumMediaType mediaType);
         Task<QuestionDto> GetQuestionById(Guid id);
-
         Task<QuestionTexteDtoBO> GetQuestionTexteById(Guid id);
-
+        Task<QuestionImageDtoBO> GetQuestionImageById(Guid id);
+        Task<QuestionAudioDtoBO> GetQuestionAudioById(Guid id);
         Task<IEnumerable<QuestionDto>> GetListAllQuestion();
-
         Task<bool> DeleteQuestion(Guid id);
-
         Task<QuestionTexteDto> GetRandomQuestionTexte();
         Task<QuestionImageDto> GetRandomQuestionImage(); 
-        //Task<QuestionImageDto> GetRandomQuestionAudio();
+        Task<QuestionAudioDto> GetRandomQuestionAudio();
     }
 }

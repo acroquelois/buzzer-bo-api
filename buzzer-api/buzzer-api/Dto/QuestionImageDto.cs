@@ -13,7 +13,7 @@ namespace buzzerApi.Dto
         public string Interogation { get; set; }
         public string Reponse { get; set; }
         public QuestionType QuestionType { get; set; }
-        public virtual IEnumerable<MediaQuestion> Medias { get; set; }
+        public virtual IEnumerable<MediaQuestionDto> Medias { get; set; }
     }
 
     public static class QuestionImageDtoExtensions
@@ -26,7 +26,7 @@ namespace buzzerApi.Dto
                 Interogation = entity.Interogation,
                 Reponse = (entity.Propositions.Count == 0 || entity.Propositions == null) ? null : entity.Propositions.First(x => x.IsCorrect) == null ? null : entity.Propositions.First(x => x.IsCorrect).Proposition,
                 QuestionType = entity.QuestionType,
-                Medias = entity.MediaQuestions
+                Medias = entity.MediaQuestions.Select(x => x.ToDto()).ToList()
             };
         }
     }

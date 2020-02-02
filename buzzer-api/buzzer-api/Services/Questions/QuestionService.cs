@@ -49,11 +49,21 @@ namespace buzzerApi.Services
         }
 
 
-        public async Task<Question> UpdateQuestion(Question question)
+        public async Task<Question> UpdateQuestion(Question question, IFormFileCollection files, EnumMediaType mediaType)
         {
+            ICollection<string> pathFiles = await _uploadService.UploadMedia(_uploadOptions, _connexionOptions, mediaType, files);
+
+            foreach (var path in pathFiles)
+            {
+                MediaQuestion media = new MediaQuestion();
+                media.Url = path;
+                media.MediaType = mediaType;
+                question.MediaQuestions.Add(media);
+            }
+            question.Propositions = question.Propositions;
             await _repository.UpdateQuestion(question);
             return question;
-            
+
         }
 
         public async Task<bool> DeleteQuestion(Guid id)
@@ -72,6 +82,18 @@ namespace buzzerApi.Services
         {
             var entity = await _repository.GetQuestion(id);
             return QuestionTexteDtoBOExtensions.ToDto(entity);
+        }
+
+        public async Task<QuestionImageDtoBO> GetQuestionImageById(Guid id)
+        {
+            var entity = await _repository.GetQuestion(id);
+            return QuestionImageDtoBOExtensions.ToDto(entity);
+        }
+
+        public async Task<QuestionAudioDtoBO> GetQuestionAudioById(Guid id)
+        {
+            var entity = await _repository.GetQuestion(id);
+            return QuestionAudioDtoBOExtensions.ToDto(entity);
         }
 
         public async Task<IEnumerable<QuestionDto>> GetListAllQuestion()
@@ -125,16 +147,17 @@ namespace buzzerApi.Services
             }
         }
 
-        //public async Task<Question> GetRandomQuestionAudio()
-        //{
-        //    try
-        //    {
-        //        return this.GetRandomQuestion(await _repository.ListAllQuestionAudio());
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
+        public async Task<QuestionAudioDto> GetRandomQuestionAudio()
+        {
+            try
+            {
+                Question question = this.GetRandomQuestion(await _repository.ListAllQuestionAudio());
+                return QuestionAudioDtoExtensions.ToDto(question);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

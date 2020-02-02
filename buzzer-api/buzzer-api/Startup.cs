@@ -93,6 +93,7 @@ namespace buzzer_api
                 .UseCors("policy")
                 .UseAuthentication()
                 .UseCustomFileImageService("/image")
+                .UseCustomFileAudioService("/audio")
                 .UseSession() 
                 .UseMvc()
                 .UseSwagger()

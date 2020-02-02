@@ -127,6 +127,62 @@ namespace buzzerApi.Controllers
         }
 
         /// <summary>
+        /// Get question of type image by id.
+        /// </summary>
+        /// <param name="id">Id of the question</param>
+        /// <response code="200">The question was returned</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Question not found</response>
+        [HttpGet("{id}"), Authorize]
+        public async Task<ActionResult<QuestionImageDtoBO>> GetQuestionImage(Guid id)
+        {
+            try
+            {
+                var question = await _questionService.GetQuestionImageById(id);
+                if (question == null)
+                {
+                    _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);
+                    return NotFound("There is no question");
+                }
+                _logger.LogInformation(_logEvent.Value.GetItem, "{Question} : List of all questions returned", _logInformation);
+                return Ok(question);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Question : Server error at get list question");
+                return BadRequest(ex);
+            }
+        }
+
+        /// <summary>
+        /// Get question of type audio by id.
+        /// </summary>
+        /// <param name="id">Id of the question</param>
+        /// <response code="200">The question was returned</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Question not found</response>
+        [HttpGet("{id}"), Authorize]
+        public async Task<ActionResult<QuestionAudioDtoBO>> GetQuestionAudio(Guid id)
+        {
+            try
+            {
+                var question = await _questionService.GetQuestionAudioById(id);
+                if (question == null)
+                {
+                    _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);
+                    return NotFound("There is no question");
+                }
+                _logger.LogInformation(_logEvent.Value.GetItem, "{Question} : List of all questions returned", _logInformation);
+                return Ok(question);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Question : Server error at get list question");
+                return BadRequest(ex);
+            }
+        }
+
+        /// <summary>
         /// Creates a question.
         /// </summary>
         /// <param name="request">form-data input</param>
@@ -144,28 +200,38 @@ namespace buzzerApi.Controllers
                     _logger.LogWarning(_logEvent.Value.CreateItem, $"Question : A new question of type {questionType.ToString()} was created", _logInformation);
                     return BadRequest("No question sended");
                 }
-                if (request.Files.Count == 0)
-                {
-                    _logger.LogWarning(_logEvent.Value.CreateItem, "{Question}: No file sended", _logInformation);
-                    return BadRequest("No file sended");
-                }
                 IFormFileCollection files = request.Files;
                 string key = request.Keys.FirstOrDefault(x => x == "question");
                 Question question = null;
+                EnumMediaType mediaType;
                 switch (questionType)
                 {
                     case EnumQuestionType.TEXTE:
+                        mediaType = EnumMediaType.Image;
                         question = JsonConvert.DeserializeObject<QuestionTexteDtoBO>(request[key]).ToEntity();
                         break;
                     case EnumQuestionType.IMAGE:
+                        if (request.Files.Count != 3)
+                        {
+                            _logger.LogWarning(_logEvent.Value.CreateItem, "{Question}: Question image must contain three media", _logInformation);
+                            return BadRequest("No file sended");
+                        }
+                        mediaType = EnumMediaType.Image;
                         question = JsonConvert.DeserializeObject<QuestionImageDtoBO>(request[key]).ToEntity();
                         break;
                     case EnumQuestionType.AUDIO:
+                        if (request.Files.Count != 1)
+                        {
+                            _logger.LogWarning(_logEvent.Value.CreateItem, "{Question}: Question audio must contain only one media", _logInformation);
+                            return BadRequest("No file sended");
+                        }
+                        mediaType = EnumMediaType.Audio;
+                        question = JsonConvert.DeserializeObject<QuestionAudioDtoBO>(request[key]).ToEntity();
                         break;
                     default:
                         return BadRequest("Type de question inconnu");
                 }
-                Question newQuestion = await _questionService.CreateQuestion(question, files, EnumMediaType.Image);
+                Question newQuestion = await _questionService.CreateQuestion(question, files, mediaType);
                 _logger.LogInformation(_logEvent.Value.CreateItem, $"A new question of type {questionType.ToString()} was created", _logInformation);
                 return CreatedAtAction("GetQuestion", new { id = newQuestion.Id }, newQuestion);
             }
@@ -177,25 +243,52 @@ namespace buzzerApi.Controllers
         }
 
         /// <summary>
-        /// Update a Question with string proposition.
+        /// Update a question.
         /// </summary>
-        /// <param name="question">Question model</param>
-        /// <returns>The modified Question</returns>
-        /// <response code="200">Returns the modified question</response>
+        /// <param name="request">form-data input</param>
+        /// <param name="questionType">type of the question: [TEXTE,AUDIO,IMAGE]</param>
+        /// <returns>Updated question</returns>
+        /// <response code="201">Returns the updated question</response>
         /// <response code="400">No files send or no question send</response>
-        [HttpPost, Authorize]
-        public IActionResult UpdateQuestionTexte([FromBody] Question question)
+        [HttpPost("{questionType}"), Authorize]
+        public async Task<IActionResult> UpdateQuestion(IFormCollection request, EnumQuestionType questionType)
         {
             try
             {
-                var updatedQuestion = _questionService.UpdateQuestion(question);
+                if (!request.ContainsKey("question"))
+                {
+                    _logger.LogWarning(_logEvent.Value.UpdateItem, $"Question : A new question of type {questionType.ToString()} was created", _logInformation);
+                    return BadRequest("No question sended");
+                }
+                IFormFileCollection files = request.Files;
+                string key = request.Keys.FirstOrDefault(x => x == "question");
+                Question question = null;
+                EnumMediaType mediaType;
+                switch (questionType)
+                {
+                    case EnumQuestionType.TEXTE:
+                        mediaType = EnumMediaType.Image;
+                        question = JsonConvert.DeserializeObject<QuestionTexteDtoBO>(request[key]).ToEntity();
+                        break;
+                    case EnumQuestionType.IMAGE:
+                        mediaType = EnumMediaType.Image;
+                        question = JsonConvert.DeserializeObject<QuestionImageDtoBO>(request[key]).ToEntity();
+                        break;
+                    case EnumQuestionType.AUDIO:
+                        mediaType = EnumMediaType.Audio;
+                        question = JsonConvert.DeserializeObject<QuestionAudioDtoBO>(request[key]).ToEntity();
+                        break;
+                    default:
+                        return BadRequest("Type de question inconnu");
+                }
+                Question newQuestion = await _questionService.UpdateQuestion(question, files, mediaType);
                 _logger.LogInformation(_logEvent.Value.UpdateItem, "{Question} : The question with id {id} was modified", _logInformation, question.Id);
-                return Ok(question);
+                return Ok(newQuestion);
             }
             catch (Exception ex)
             {
-                _logger.LogError(_logEvent.Value.CreateItem, "Server error at question text creation", _logInformation);
-                return BadRequest(ex);
+                _logger.LogError(_logEvent.Value.CreateItem, $"Server error at question media creation{ex.ToString()}", _logInformation);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -287,26 +380,26 @@ namespace buzzerApi.Controllers
         /// <response code="200">A Random question audio was returned</response>
         /// <response code="400">Bad request</response>
         /// <response code="404">Question not found</response>
-        //[HttpGet]
-        //public async Task<ActionResult<QuestionImageDto>> GetRandomQuestionAudio()
-        //{
-        //    try
-        //    {
-        //        var question = await _questionService.GetRandomQuestionAudio();
-        //        if (question == null)
-        //        {
-        //            _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);
-        //            return NotFound("There is no question");
-        //        }
-        //        _logger.LogInformation(_logEvent.Value.GetItem, "{Question} : List of all questions returned", _logInformation);
-        //        return Ok(question);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError("Question : Server error at get random question");
-        //        return BadRequest(ex);
-        //    }
-        //}
+        [HttpGet]
+        public async Task<ActionResult<QuestionAudioDto>> GetRandomQuestionAudio()
+        {
+            try
+            {
+                var question = await _questionService.GetRandomQuestionAudio();
+                if (question == null)
+                {
+                    _logger.LogWarning(_logEvent.Value.GetItem, "{Question} : There is no question found", _logInformation);
+                    return NotFound("There is no question");
+                }
+                _logger.LogInformation(_logEvent.Value.GetItem, "{Question} : List of all questions returned", _logInformation);
+                return Ok(question);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Question : Server error at get random question");
+                return BadRequest(ex);
+            }
+        }
 
     }
 }

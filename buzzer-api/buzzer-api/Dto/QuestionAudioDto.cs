@@ -7,27 +7,25 @@ using System.Threading.Tasks;
 
 namespace buzzerApi.Dto
 {
-    public class QuestionTexteDto
+    public class QuestionAudioDto
     {
         public Guid Id { get; set; }
         public string Interogation { get; set; }
-        public int Reponse { get; set; }
+        public string Reponse { get; set; }
         public QuestionType QuestionType { get; set; }
         public MediaQuestionDto Media { get; set; }
-        public virtual IEnumerable<PropositionDto> Propositions { get; set; }
     }
 
-    public static class QuestionTexteDtoExtensions
+    public static class QuestionAudioDtoExtensions
     {
-        public static QuestionTexteDto ToDto(this Models.Question entity)
+        public static QuestionAudioDto ToDto(this Models.Question entity)
         {
-            return new QuestionTexteDto
+            return new QuestionAudioDto
             {
                 Id = entity.Id,
                 Interogation = entity.Interogation,
-                Reponse = entity.Propositions.IndexOf(entity.Propositions.First(x => x.IsCorrect)),
+                Reponse = (entity.Propositions.Count == 0 || entity.Propositions == null) ? null : entity.Propositions.First(x => x.IsCorrect) == null ? null : entity.Propositions.First(x => x.IsCorrect).Proposition,
                 QuestionType = entity.QuestionType,
-                Propositions = entity.Propositions.Select(x => PropositionDtoExtensions.ToDto(x)),
                 Media = (entity.MediaQuestions.Count == 0) ? null : entity.MediaQuestions.First().ToDto()
             };
         }

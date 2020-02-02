@@ -10,29 +10,29 @@ using buzzerApi.Enum;
 
 namespace buzzerApi.Dto
 {
-    public class QuestionImageDtoBO
+    public class QuestionAudioDtoBO
     {
         public Guid Id { get; set; }
         public string Interogation { get; set; }
         public ReponseDtoBO Reponse { get; set; }
         public QuestionType QuestionType { get; set; }
-        public ICollection<MediaQuestionDto> MediaQuestions { get; set; } = new List<MediaQuestionDto>();
+        public MediaQuestionDto Media{ get; set; }
     }
 
-    public static class QuestionImageDtoBOExtensions
+    public static class QuestionAudioDtoBOExtensions
     {
-        public static QuestionImageDtoBO ToDto(this Models.Question entity)
+        public static QuestionAudioDtoBO ToDto(this Models.Question entity)
         {
-            return new QuestionImageDtoBO
+            return new QuestionAudioDtoBO
             {
                 Id = entity.Id,
                 Interogation = entity.Interogation,
                 Reponse = entity.Propositions == null ? null : (PropositionDtoBOExtensions.ToDto(entity.Propositions.First(x => x.IsCorrect))).ToReponse(),
-                MediaQuestions = entity.MediaQuestions.Select(x => x.ToDto()).ToList(),
+                Media = (entity.MediaQuestions.Count == 0) ? null : entity.MediaQuestions.First().ToDto(),
                 QuestionType = entity.QuestionType
             };
         }
-        public static Question ToEntity(this QuestionImageDtoBO dto)
+        public static Question ToEntity(this QuestionAudioDtoBO dto)
         {
             if (dto.Reponse == null)
             {
@@ -44,9 +44,9 @@ namespace buzzerApi.Dto
             {
                 Id = dto.Id,
                 Interogation = dto.Interogation,
-                Propositions = propositions,
                 QuestionTypeId = dto.QuestionType == null ? null : dto.QuestionType.Id,
-                MediaQuestions = dto.MediaQuestions.Select(x => x.ToEntity()).ToList()
+                Propositions = propositions,
+                MediaQuestions = dto.Media == null ? new List<MediaQuestion>() : new List<MediaQuestion> { dto.Media.ToEntity() }
             };
         }
     }

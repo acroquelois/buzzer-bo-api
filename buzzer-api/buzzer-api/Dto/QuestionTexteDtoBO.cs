@@ -15,7 +15,8 @@ namespace buzzerApi.Dto
         public Guid Id { get; set; }
         public string Interogation { get; set; }
         public ReponseDtoBO Reponse { get; set; }
-        public ICollection<MediaQuestion> MediaQuestions { get; set; } = new List<MediaQuestion>();
+        public MediaQuestionDto Media { get; set; }
+        public QuestionType QuestionType { get; set; }
         public ICollection<PropositionDtoBO> Propositions { get; set; } = new List<PropositionDtoBO>();
     }
 
@@ -29,18 +30,19 @@ namespace buzzerApi.Dto
                 Interogation = entity.Interogation,
                 Reponse = entity.Propositions == null ? null : (PropositionDtoBOExtensions.ToDto(entity.Propositions.First(x => x.IsCorrect))).ToReponse(),
                 Propositions = entity.Propositions.Where(x => !x.IsCorrect).Select(x => PropositionDtoBOExtensions.ToDto(x)).ToList(),
-                MediaQuestions= entity.MediaQuestions
+                QuestionType = entity.QuestionType,
+                Media = entity.MediaQuestions.Count == 0 ? null : entity.MediaQuestions.First().ToDto()
             };
         }
         public static Question ToEntity(this QuestionTexteDtoBO dto)
         {
             if (dto.Reponse == null)
             {
-                throw new NoResponseException("La question ne contient pas de réponse");
+                throw new NoResponseException("No response send for the question");
             }
             if(dto.Propositions.Count != 3)
             {
-                throw new NoPropositionException("La question doit contenir trois fausses proposition de réponse");
+                throw new NoPropositionException("A Texte question must contain three fake choice");
             }
             ICollection<Propositions> propositions = dto.Propositions.Select(x => PropositionDtoBOExtensions.ToEntity(x)).ToList();
             propositions.Add(dto.Reponse.ToProposition());
@@ -48,9 +50,9 @@ namespace buzzerApi.Dto
             {
                 Id = dto.Id,
                 Interogation = dto.Interogation,
-                QuestionTypeId = EnumQuestionType.TEXTE.ToString(),
+                QuestionTypeId = dto.QuestionType == null ? null : dto.QuestionType.Id,
                 Propositions = propositions,
-                MediaQuestions = dto.MediaQuestions
+                MediaQuestions = dto.Media == null ? new List<MediaQuestion>() : new List<MediaQuestion> { dto.Media.ToEntity() }
             };
         }
     }
